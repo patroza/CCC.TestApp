@@ -51,7 +51,6 @@
     <Compile Include="Usecases\Users\UpdateUser.cs" />
     <Compile Include="Usecases\Users\UserInteractor.cs" />
     <Compile Include="Usecases\Users\UserDoesntExistException.cs" />
-    <Compile Include="Usecases\ValidatingResponseModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CCC.TestApp.Core.Domain\CCC.TestApp.Core.Domain.csproj">

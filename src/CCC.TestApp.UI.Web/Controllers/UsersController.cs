@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Web;
 using System.Web.Mvc;
 using CCC.TestApp.Core.Application.Usecases;
@@ -80,6 +79,11 @@ namespace CCC.TestApp.UI.Web.Controllers
                         PasswordConfirmation = model.PasswordConfirmation
                     });
                 return _response;
+            } catch (OldPasswordMismatchException) {
+                // We only catch OldPasswordMismatchException because other exceptions at this point should mean real error
+                // (e.g ModelState.IsValid should've checked the other inputs)
+                ModelState.AddModelError("", "Old password mismatch");
+                return View(model);
             } catch (UserDoesntExistException e) {
                 throw new HttpException(404, "user not found", e);
             }
@@ -88,9 +92,6 @@ namespace CCC.TestApp.UI.Web.Controllers
         #region Responders
 
         public void Respond(ChangePasswordResponseModel model) {
-            if (model.Succeeded)
-                return;
-            AddErrors(model.Errors);
             _response = RedirectToAction("Show");
         }
 
@@ -107,15 +108,7 @@ namespace CCC.TestApp.UI.Web.Controllers
         }
 
         public void Respond(UpdateUserResponseModel model) {
-            if (model.Succeeded)
-                return;
-            AddErrors(model.Errors);
             _response = RedirectToAction("Show");
-        }
-
-        void AddErrors(IEnumerable<string> errors) {
-            foreach (var error in errors)
-                ModelState.AddModelError("", error);
         }
 
         #endregion

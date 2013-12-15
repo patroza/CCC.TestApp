@@ -17,28 +17,28 @@ namespace CCC.TestApp.Core.Application.Usecases.Users
             var user = GetExistingUser(inputModel.UserId);
 
             var response = new ChangePasswordResponseModel();
-            if (HandlePasswordConfirmation(inputModel, response)
-                && HandleOldPassword(inputModel, user, response)) {
-                user.Password = inputModel.Password;
-                UserRepository.Update(user);
-            }
+            ConfirmPasswordConfirmation(inputModel);
+            ConfirmOldPassword(inputModel, user);
+
+            user.Password = inputModel.Password;
+            UserRepository.Update(user);
             _responder.Respond(response);
         }
 
-        bool HandleOldPassword(ChangePasswordRequestModel inputModel, User user, ChangePasswordResponseModel response) {
-            if (inputModel.OldPassword.Equals(user.Password))
-                return true;
-            response.Errors.Add("Old password mismatch");
-            return false;
+        static void ConfirmOldPassword(ChangePasswordRequestModel inputModel, User user) {
+            if (!inputModel.OldPassword.Equals(user.Password))
+                throw new OldPasswordMismatchException();
         }
 
-        bool HandlePasswordConfirmation(ChangePasswordRequestModel inputModel, ChangePasswordResponseModel response) {
-            if (inputModel.Password.Equals(inputModel.PasswordConfirmation))
-                return true;
-            response.Errors.Add("Password does not match confirmation");
-            return false;
+        static void ConfirmPasswordConfirmation(ChangePasswordRequestModel inputModel) {
+            if (!inputModel.Password.Equals(inputModel.PasswordConfirmation))
+                throw new PasswordConfirmationMismatchException();
         }
     }
+
+    public class OldPasswordMismatchException : Exception {}
+
+    public class PasswordConfirmationMismatchException : Exception {}
 
     public struct ChangePasswordRequestModel
     {
@@ -48,5 +48,5 @@ namespace CCC.TestApp.Core.Application.Usecases.Users
         public Guid UserId { get; set; }
     }
 
-    public class ChangePasswordResponseModel : ValidatingResponseModel {}
+    public struct ChangePasswordResponseModel {}
 }
