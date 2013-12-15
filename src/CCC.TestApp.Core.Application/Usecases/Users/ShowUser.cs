@@ -3,13 +3,18 @@ using CCC.TestApp.Core.Application.DALInterfaces;
 
 namespace CCC.TestApp.Core.Application.Usecases.Users
 {
-    public class ShowUserInteractor : UserInteractor, IShowUserRequestBoundary
+    public class ShowUserInteractor : UserInteractor, IRequestBoundary<ShowUserRequestModel>
     {
-        public ShowUserInteractor(IUserRepository userRepository) : base(userRepository) {}
+        readonly IResponseBoundary<ShowUserResponseModel> _responder;
 
-        public void Invoke(ShowUserRequestModel inputModel, IShowUserResponseBoundary responder) {
+        public ShowUserInteractor(IUserRepository userRepository, IResponseBoundary<ShowUserResponseModel> responder)
+            : base(userRepository) {
+            _responder = responder;
+        }
+
+        public void Invoke(ShowUserRequestModel inputModel) {
             var user = GetExistingUser(inputModel.UserId);
-            responder.Respond(new ShowUserResponseModel {UserName = user.UserName});
+            _responder.Respond(new ShowUserResponseModel {UserName = user.UserName});
         }
     }
 
@@ -22,8 +27,4 @@ namespace CCC.TestApp.Core.Application.Usecases.Users
     {
         public Guid UserId { get; set; }
     }
-
-    public interface IShowUserResponseBoundary : IResponseBoundary<ShowUserResponseModel> {}
-
-    public interface IShowUserRequestBoundary : IRequestBoundary<ShowUserRequestModel, IShowUserResponseBoundary> {}
 }

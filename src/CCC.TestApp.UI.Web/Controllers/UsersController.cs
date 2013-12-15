@@ -1,6 +1,7 @@
 using System;
 using System.Web;
 using System.Web.Mvc;
+using CCC.TestApp.Core.Application.Usecases;
 using CCC.TestApp.Core.Application.Usecases.Users;
 using CCC.TestApp.UI.Web.Models;
 using CCC.TestApp.UI.Web.Presenters;
@@ -9,16 +10,18 @@ namespace CCC.TestApp.UI.Web.Controllers
 {
     public class UsersController : Controller
     {
-        readonly Lazy<IChangePasswordRequestBoundary> _changePassword;
-        readonly Lazy<ICreateUserRequestBoundary> _create;
-        readonly Lazy<IDestroyUserRequestBoundary> _destroy;
+        readonly Lazy<IRequestBoundary<ChangePasswordRequestModel>> _changePassword;
+        readonly Lazy<IRequestBoundary<CreateUserRequestModel>> _create;
+        readonly Lazy<IRequestBoundary<DestroyUserRequestModel>> _destroy;
         readonly UsersPresenter _presenter;
-        readonly Lazy<IShowUserRequestBoundary> _show;
-        readonly Lazy<IUpdateUserRequestBoundary> _update;
+        readonly Lazy<IRequestBoundary<ShowUserRequestModel>> _show;
+        readonly Lazy<IRequestBoundary<UpdateUserRequestModel>> _update;
 
-        public UsersController(UsersPresenter presenter, Lazy<IChangePasswordRequestBoundary> changePassword,
-            Lazy<ICreateUserRequestBoundary> create, Lazy<IShowUserRequestBoundary> show,
-            Lazy<IDestroyUserRequestBoundary> destroy, Lazy<IUpdateUserRequestBoundary> update) {
+        public UsersController(UsersPresenter presenter,
+            Lazy<IRequestBoundary<ChangePasswordRequestModel>> changePassword,
+            Lazy<IRequestBoundary<CreateUserRequestModel>> create, Lazy<IRequestBoundary<ShowUserRequestModel>> show,
+            Lazy<IRequestBoundary<DestroyUserRequestModel>> destroy,
+            Lazy<IRequestBoundary<UpdateUserRequestModel>> update) {
             _presenter = presenter;
             _changePassword = changePassword;
             _create = create;
@@ -28,15 +31,13 @@ namespace CCC.TestApp.UI.Web.Controllers
         }
 
         public ActionResult Create(CreateUserViewModel model) {
-            _create.Value.Invoke(
-                new CreateUserRequestModel {UserName = model.UserName, Password = model.Password},
-                _presenter);
+            _create.Value.Invoke(new CreateUserRequestModel {UserName = model.UserName, Password = model.Password});
             return View(_presenter.Result);
         }
 
         public ActionResult Destroy(Guid userId) {
             try {
-                _destroy.Value.Invoke(new DestroyUserRequestModel {UserId = userId}, _presenter);
+                _destroy.Value.Invoke(new DestroyUserRequestModel {UserId = userId});
                 return View(_presenter.Result);
             } catch (UserDoesntExistException e) {
                 throw new HttpException(404, "user not found", e);
@@ -45,7 +46,7 @@ namespace CCC.TestApp.UI.Web.Controllers
 
         public ActionResult Show(Guid userId) {
             try {
-                _show.Value.Invoke(new ShowUserRequestModel {UserId = userId}, _presenter);
+                _show.Value.Invoke(new ShowUserRequestModel {UserId = userId});
                 return View(_presenter.Result);
             } catch (UserDoesntExistException e) {
                 throw new HttpException(404, "user not found", e);
@@ -54,7 +55,7 @@ namespace CCC.TestApp.UI.Web.Controllers
 
         public ActionResult Update(Guid userId, UpdateUserViewModel model) {
             try {
-                _update.Value.Invoke(new UpdateUserRequestModel {UserId = userId, UserName = model.UserName}, _presenter);
+                _update.Value.Invoke(new UpdateUserRequestModel {UserId = userId, UserName = model.UserName});
                 return View(_presenter.Result);
             } catch (UserDoesntExistException e) {
                 throw new HttpException(404, "user not found", e);
@@ -69,7 +70,7 @@ namespace CCC.TestApp.UI.Web.Controllers
                         OldPassword = model.OldPassword,
                         Password = model.NewPassword,
                         PasswordConfirmation = model.PasswordConfirmation
-                    }, _presenter);
+                    });
                 return View(_presenter.Result);
             } catch (UserDoesntExistException e) {
                 throw new HttpException(404, "user not found", e);

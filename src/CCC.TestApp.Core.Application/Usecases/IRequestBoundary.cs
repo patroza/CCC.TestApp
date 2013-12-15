@@ -1,7 +1,7 @@
 ﻿namespace CCC.TestApp.Core.Application.Usecases
 {
-    public interface IRequestBoundary<in TInputModel, in TResponseBoundary>
+    public interface IRequestBoundary<in TInputModel>
     {
-        void Invoke(TInputModel inputModel, TResponseBoundary responder);
+        void Invoke(TInputModel inputModel);
     }
 }

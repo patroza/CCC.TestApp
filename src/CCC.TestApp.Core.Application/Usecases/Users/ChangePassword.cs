@@ -4,40 +4,42 @@ using CCC.TestApp.Core.Domain.Entities;
 
 namespace CCC.TestApp.Core.Application.Usecases.Users
 {
-    public class ChangePassword : UserInteractor, IChangePasswordRequestBoundary
+    public class ChangePassword : UserInteractor, IRequestBoundary<ChangePasswordRequestModel>
     {
-        public ChangePassword(IUserRepository userRepository) : base(userRepository) {}
+        readonly IResponseBoundary<ChangePasswordResponseModel> _responder;
 
-        public void Invoke(ChangePasswordRequestModel inputModel, IChangePasswordResponseBoundary responder) {
+        public ChangePassword(IUserRepository userRepository, IResponseBoundary<ChangePasswordResponseModel> responder)
+            : base(userRepository) {
+            _responder = responder;
+        }
+
+        public void Invoke(ChangePasswordRequestModel inputModel) {
             var user = GetExistingUser(inputModel.UserId);
 
             var response = new ChangePasswordResponseModel();
-            if (!HandlePasswordConfirmation(inputModel, responder, response))
+            if (!HandlePasswordConfirmation(inputModel, response))
                 return;
 
-            if (!HandleOldPassword(inputModel, responder, user, response))
+            if (!HandleOldPassword(inputModel, user, response))
                 return;
 
             user.Password = inputModel.Password;
             UserRepository.Update(user);
-            responder.Respond(response);
+            _responder.Respond(response);
         }
 
-        static bool HandleOldPassword(ChangePasswordRequestModel inputModel, IChangePasswordResponseBoundary responder,
-            User user, ChangePasswordResponseModel response) {
+        bool HandleOldPassword(ChangePasswordRequestModel inputModel, User user, ChangePasswordResponseModel response) {
             if (!inputModel.OldPassword.Equals(user.Password)) {
-                responder.Respond(response);
+                _responder.Respond(response);
                 return false;
             }
             response.OldPasswordMatched = true;
             return true;
         }
 
-        static bool HandlePasswordConfirmation(ChangePasswordRequestModel inputModel,
-            IChangePasswordResponseBoundary responder,
-            ChangePasswordResponseModel response) {
+        bool HandlePasswordConfirmation(ChangePasswordRequestModel inputModel, ChangePasswordResponseModel response) {
             if (!inputModel.Password.Equals(inputModel.PasswordConfirmation)) {
-                responder.Respond(response);
+                _responder.Respond(response);
                 return false;
             }
             response.PasswordsMatched = true;
@@ -58,9 +60,4 @@ namespace CCC.TestApp.Core.Application.Usecases.Users
         public bool PasswordsMatched { get; set; }
         public bool OldPasswordMatched { get; set; }
     }
-
-    public interface IChangePasswordRequestBoundary :
-        IRequestBoundary<ChangePasswordRequestModel, IChangePasswordResponseBoundary> {}
-
-    public interface IChangePasswordResponseBoundary : IResponseBoundary<ChangePasswordResponseModel> {}
 }
