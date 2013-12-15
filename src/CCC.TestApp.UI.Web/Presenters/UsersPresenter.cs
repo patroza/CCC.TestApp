@@ -1,11 +1,11 @@
 ﻿using System;
+using CCC.TestApp.Core.Application.Usecases;
 using CCC.TestApp.Core.Application.Usecases.Users;
 
 namespace CCC.TestApp.UI.Web.Presenters
 {
-    public class UsersPresenter : IChangePasswordResponseBoundary, ICreateUserResponseBoundary,
-        IShowUserResponseBoundary, IDestroyUserResponseBoundary,
-        IUpdateUserResponseBoundary
+    public class UsersPresenter : IResponseBoundary<ChangePasswordResponseModel>, IResponseBoundary<CreateUserResponseModel>,
+        IResponseBoundary<DestroyUserResponseModel>, IResponseBoundary<UpdateUserResponseModel>
     {
         public object Result;
 
