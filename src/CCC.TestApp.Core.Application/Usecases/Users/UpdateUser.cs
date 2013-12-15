@@ -26,5 +26,5 @@ namespace CCC.TestApp.Core.Application.Usecases.Users
         public string UserName { get; set; }
     }
 
-    public class UpdateUserResponseModel : ValidatingResponseModel {}
+    public struct UpdateUserResponseModel {}
 }
