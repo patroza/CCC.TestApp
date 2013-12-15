@@ -22,5 +22,9 @@ namespace CCC.TestApp.Core.Application.Usecases.Users
         public string Password { get; set; }
     }
 
-    public struct CreateUserResponseModel {}
+    public struct CreateUserResponseModel
+    {
+        public bool Succeeded { get; set; }
+        public string[] Errors { get; set; }
+    }
 }

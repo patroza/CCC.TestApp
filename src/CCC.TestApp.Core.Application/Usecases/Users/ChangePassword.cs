@@ -17,33 +17,26 @@ namespace CCC.TestApp.Core.Application.Usecases.Users
             var user = GetExistingUser(inputModel.UserId);
 
             var response = new ChangePasswordResponseModel();
-            if (!HandlePasswordConfirmation(inputModel, response))
-                return;
-
-            if (!HandleOldPassword(inputModel, user, response))
-                return;
-
-            user.Password = inputModel.Password;
-            UserRepository.Update(user);
+            if (HandlePasswordConfirmation(inputModel, response)
+                && HandleOldPassword(inputModel, user, response)) {
+                user.Password = inputModel.Password;
+                UserRepository.Update(user);
+            }
             _responder.Respond(response);
         }
 
         bool HandleOldPassword(ChangePasswordRequestModel inputModel, User user, ChangePasswordResponseModel response) {
-            if (!inputModel.OldPassword.Equals(user.Password)) {
-                _responder.Respond(response);
-                return false;
-            }
-            response.OldPasswordMatched = true;
-            return true;
+            if (inputModel.OldPassword.Equals(user.Password))
+                return true;
+            response.Errors.Add("Old password mismatch");
+            return false;
         }
 
         bool HandlePasswordConfirmation(ChangePasswordRequestModel inputModel, ChangePasswordResponseModel response) {
-            if (!inputModel.Password.Equals(inputModel.PasswordConfirmation)) {
-                _responder.Respond(response);
-                return false;
-            }
-            response.PasswordsMatched = true;
-            return true;
+            if (inputModel.Password.Equals(inputModel.PasswordConfirmation))
+                return true;
+            response.Errors.Add("Password does not match confirmation");
+            return false;
         }
     }
 
@@ -55,9 +48,5 @@ namespace CCC.TestApp.Core.Application.Usecases.Users
         public Guid UserId { get; set; }
     }
 
-    public struct ChangePasswordResponseModel
-    {
-        public bool PasswordsMatched { get; set; }
-        public bool OldPasswordMatched { get; set; }
-    }
+    public class ChangePasswordResponseModel : ValidatingResponseModel {}
 }
