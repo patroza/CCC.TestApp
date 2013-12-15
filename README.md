@@ -1,4 +1,4 @@
-# Clean Coders Community TestApp
+# Clean Coders Community EBI TestApp
 
 ## Introduction
 
@@ -32,9 +32,9 @@ I would love to hear from you what you think about my implementation of the patt
 ## Architecture
 EBI: Entity, Boundary, Interactor
 
-Entity; Enterprise wide business rules
-Boundary; Interfaces that decouple annoying details like Data Access and UI, from Enterprise and Application wide business rules
-Interactor; Application specific use cases
+* Entity; Enterprise wide business rules
+* Boundary; Interfaces that decouple annoying details like Data Access and UI, from Enterprise and Application wide business rules
+* Interactor; Application specific use cases
 
 ### Layout
 * Core
