@@ -40,10 +40,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DALInterfaces\IUserRepository.cs" />
+    <Compile Include="DALInterfaces\RecordAlreadyExistsException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Usecases\IRequestBoundary.cs" />
     <Compile Include="Usecases\IResponseBoundary.cs" />
-    <Compile Include="Usecases\RecordDoesntExistException.cs" />
+    <Compile Include="DALInterfaces\RecordDoesntExistException.cs" />
     <Compile Include="Usecases\Users\ChangePassword.cs" />
     <Compile Include="Usecases\Users\CreateUser.cs" />
     <Compile Include="Usecases\Users\DestroyUser.cs" />

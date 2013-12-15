@@ -1,4 +1,5 @@
 ﻿using CCC.TestApp.Core.Application.DALInterfaces;
+using CCC.TestApp.Core.Domain.Entities;
 
 namespace CCC.TestApp.Core.Application.Usecases.Users
 {
@@ -12,9 +13,16 @@ namespace CCC.TestApp.Core.Application.Usecases.Users
         }
 
         public void Invoke(CreateUserRequestModel inputModel) {
+            try {
+                UserRepository.Create(new User());
+            } catch (RecordAlreadyExistsException) {
+                throw new UserAlreadyExistsException();
+            }
             _responder.Respond(new CreateUserResponseModel());
         }
     }
+
+    public class UserAlreadyExistsException : RecordAlreadyExistsException {}
 
     public struct CreateUserRequestModel
     {

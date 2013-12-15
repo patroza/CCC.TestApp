@@ -1,3 +1,5 @@
+using CCC.TestApp.Core.Application.DALInterfaces;
+
 namespace CCC.TestApp.Core.Application.Usecases.Users
 {
     public class UserDoesntExistException : RecordDoesntExistException

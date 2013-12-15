@@ -34,8 +34,14 @@ namespace CCC.TestApp.UI.Web.Controllers
         public ActionResult Create(CreateUserViewModel model) {
             if (!ModelState.IsValid)
                 return View(model);
-            _create.Value.Invoke(new CreateUserRequestModel {UserName = model.UserName, Password = model.Password});
-            return _response;
+
+            try {
+                _create.Value.Invoke(new CreateUserRequestModel {UserName = model.UserName, Password = model.Password});
+                return _response;
+            } catch (UserAlreadyExistsException) {
+                ModelState.AddModelError("", "Username already exists");
+                return View(model);
+            }
         }
 
         public ActionResult Destroy(Guid userId) {
