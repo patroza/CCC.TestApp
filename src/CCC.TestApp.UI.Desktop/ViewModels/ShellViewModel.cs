@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CCC.TestApp.UI.Desktop.ViewModels
 {
-    class ShellViewModel
+    public class ShellViewModel
     {
     }
 }
