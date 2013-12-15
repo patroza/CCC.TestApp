@@ -1,8 +1,14 @@
 ﻿<Application x:Class="CCC.TestApp.UI.Desktop.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             StartupUri="MainWindow.xaml">
+             xmlns:desktop="clr-namespace:CCC.TestApp.UI.Desktop">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary>
+                    <desktop:AppBootstrapper x:Key="Bootstrapper" />
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

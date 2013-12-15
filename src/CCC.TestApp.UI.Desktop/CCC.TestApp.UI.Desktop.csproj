@@ -38,7 +38,11 @@
       <HintPath>..\packages\Caliburn.Micro.1.5.2\lib\net45\Caliburn.Micro.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.Composition.Registration" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Reflection.Context" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Caliburn.Micro.1.5.2\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
@@ -59,6 +63,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AppBootstrapper.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="Views\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
@@ -104,6 +109,14 @@
     <ProjectReference Include="..\CCC.TestApp.Core.Application\CCC.TestApp.Core.Application.csproj">
       <Project>{0014dd7f-f3de-46ed-a786-0aa9c1969d8a}</Project>
       <Name>CCC.TestApp.Core.Application</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CCC.TestApp.Core.Domain\CCC.TestApp.Core.Domain.csproj">
+      <Project>{2C5F8A6B-2CAD-46A5-A6BC-9C8387E6F715}</Project>
+      <Name>CCC.TestApp.Core.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CCC.TestApp.Infrastructure.DAL\CCC.TestApp.Infrastructure.DAL.csproj">
+      <Project>{EE700191-3182-4AF5-9CDF-214813E79B29}</Project>
+      <Name>CCC.TestApp.Infrastructure.DAL</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
