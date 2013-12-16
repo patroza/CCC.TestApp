@@ -25,7 +25,7 @@ namespace CCC.TestApp.UI.Desktop
         protected override IEnumerable<Assembly> SelectAssemblies() {
             return new[] {
                 Assembly.GetExecutingAssembly(), // UI - Self
-                typeof (UserRepository).Assembly, // DAL
+                typeof (MockUserRepository).Assembly, // DAL
                 typeof (UserInteractor).Assembly, // Core App
                 typeof (User).Assembly // Core Domain
                 //typeof (IWindowManager).Assembly

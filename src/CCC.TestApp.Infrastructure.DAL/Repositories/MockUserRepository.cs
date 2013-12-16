@@ -6,11 +6,11 @@ using CCC.TestApp.Core.Domain.Entities;
 
 namespace CCC.TestApp.Infrastructure.DAL.Repositories
 {
-    public class UserRepository : IUserRepository
+    public class MockUserRepository : IUserRepository
     {
         readonly Dictionary<Guid, User> _userList = new Dictionary<Guid, User>();
 
-        public UserRepository() {
+        public MockUserRepository() {
             var guid = Guid.NewGuid();
             _userList.Add(guid, new User(guid) { UserName = "Test user 1" });
             guid = Guid.NewGuid();
