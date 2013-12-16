@@ -48,7 +48,7 @@
     <Compile Include="Usecases\Users\ChangePassword.cs" />
     <Compile Include="Usecases\Users\CreateUser.cs" />
     <Compile Include="Usecases\Users\DestroyUser.cs" />
-    <Compile Include="Usecases\Users\ListUsers.cs" />
+    <Compile Include="Usecases\Users\ListUsersInteractor.cs" />
     <Compile Include="Usecases\Users\ShowUser.cs" />
     <Compile Include="Usecases\Users\UpdateUser.cs" />
     <Compile Include="Usecases\Users\UserInteractor.cs" />

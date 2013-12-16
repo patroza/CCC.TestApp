@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using CCC.TestApp.Core.Application.DALInterfaces;
 using CCC.TestApp.Core.Domain.Entities;
 
@@ -7,6 +8,13 @@ namespace CCC.TestApp.Infrastructure.DAL.Repositories
 {
     public class UserRepository : IUserRepository
     {
+        readonly Dictionary<Guid, User> _userList = new Dictionary<Guid, User>();
+
+        public UserRepository() {
+            var guid = Guid.NewGuid();
+            _userList.Add(guid, new User(guid) { UserName = "Test user 1" });
+        }
+
         public User Find(Guid userId) {
             throw new NotImplementedException();
         }
@@ -25,7 +33,7 @@ namespace CCC.TestApp.Infrastructure.DAL.Repositories
         }
 
         public List<User> All() {
-            throw new NotImplementedException();
+            return _userList.Values.ToList();
         }
 
         public User Find(string userName) {

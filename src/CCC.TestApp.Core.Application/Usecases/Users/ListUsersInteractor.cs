@@ -4,11 +4,11 @@ using CCC.TestApp.Core.Domain.Entities;
 
 namespace CCC.TestApp.Core.Application.Usecases.Users
 {
-    public class ListUsers : UserInteractor, IRequestBoundary<ListUsersRequestModel>
+    public class ListUsersInteractor : UserInteractor, IRequestBoundary<ListUsersRequestModel>
     {
         readonly IResponseBoundary<ListUsersResponseModel> _responder;
 
-        public ListUsers(IUserRepository userRepository, IResponseBoundary<ListUsersResponseModel> responder)
+        public ListUsersInteractor(IUserRepository userRepository, IResponseBoundary<ListUsersResponseModel> responder)
             : base(userRepository) {
             _responder = responder;
         }
