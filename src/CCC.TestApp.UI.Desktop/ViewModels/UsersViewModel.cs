@@ -1,16 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using Caliburn.Micro;
+using System.Collections.ObjectModel;
 using CCC.TestApp.Core.Application.Usecases;
 using CCC.TestApp.Core.Application.Usecases.Users;
 using CCC.TestApp.Core.Domain.Entities;
 
 namespace CCC.TestApp.UI.Desktop.ViewModels
 {
-    public class UsersViewModel : Screen, IResponseBoundary<ListUsersResponseModel>
+    public class UsersViewModel : ScreenBase, IResponseBoundary<ListUsersResponseModel>
     {
         readonly Lazy<IRequestBoundary<ListUsersRequestModel>> _listUsers;
-        List<User> _users;
+        User _selectedUser;
+        ObservableCollection<User> _users;
 
         public UsersViewModel(Lazy<IRequestBoundary<ListUsersRequestModel>> listUsers) {
             _listUsers = listUsers;
@@ -18,16 +18,18 @@ namespace CCC.TestApp.UI.Desktop.ViewModels
             base.DisplayName = "Users";
         }
 
-        public List<User> Users {
+        public ObservableCollection<User> Users {
             get { return _users; }
-            set {
-                _users = value;
-                NotifyOfPropertyChange();
-            }
+            set { SetProperty(ref _users, value); }
+        }
+
+        public User SelectedUser {
+            get { return _selectedUser; }
+            set { SetProperty(ref _selectedUser, value); }
         }
 
         public void Respond(ListUsersResponseModel model) {
-            Users = model.Users;
+            Users = new ObservableCollection<User>(model.Users);
         }
 
         protected override void OnInitialize() {
