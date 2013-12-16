@@ -10,7 +10,17 @@
              d:DataContext="{d:DesignInstance viewModels:UsersViewModel}" cal:Bind.AtDesignTime="True"
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <ListBox x:Name="Users" cal:Message.Attach="[Event MouseDoubleClick] = [Action ShowSelectedUser()]">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="24" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Grid>
+            <Button Content="New" x:Name="NewUser" />
+        </Grid>
+
+        <ListBox Grid.Row="1" x:Name="Users"
+                 cal:Message.Attach="[Event MouseDoubleClick] = [Action ShowSelectedUser()]">
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type entities:User}">
                     <TextBlock Text="{Binding UserName}" />

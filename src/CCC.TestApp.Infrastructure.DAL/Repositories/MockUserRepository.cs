@@ -20,7 +20,8 @@ namespace CCC.TestApp.Infrastructure.DAL.Repositories
         }
 
         public User Find(Guid userId) {
-            return _userList.ContainsKey(userId) ? Mapper.DynamicMap<User>(_userList[userId]) : null;
+            lock (_userList)
+                return _userList.ContainsKey(userId) ? Mapper.DynamicMap<User>(_userList[userId]) : null;
         }
 
         public void Update(User user) {
@@ -32,16 +33,19 @@ namespace CCC.TestApp.Infrastructure.DAL.Repositories
         }
 
         public void Create(User user) {
-            if (Find(user.UserName) != null)
-                throw new RecordAlreadyExistsException();
+            lock (_userList) {
+                if (_userList.Values.Any(x => x.UserName.Equals(user.UserName)))
+                    throw new RecordAlreadyExistsException();
+
+                var userRow = Mapper.DynamicMap<UserRow>(user);
+                userRow.Id = Guid.NewGuid();
+                _userList.Add(userRow.Id, Mapper.DynamicMap<UserRow>(user));
+            }
         }
 
         public List<User> All() {
-            return _userList.Values.Select(Mapper.DynamicMap<User>).ToList();
-        }
-
-        public User Find(string userName) {
-            throw new NotImplementedException();
+            lock (_userList)
+                return _userList.Values.Select(Mapper.DynamicMap<User>).ToList();
         }
     }
 }

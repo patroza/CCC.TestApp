@@ -15,7 +15,11 @@ namespace CCC.TestApp.Core.Application.Usecases.Users
 
         public void Invoke(CreateUserRequestModel inputModel) {
             try {
-                UserRepository.Create(new User(Guid.NewGuid()));
+                // TODO: AutoMapper?
+                UserRepository.Create(new User(Guid.NewGuid()) {
+                    UserName = inputModel.UserName,
+                    Password = inputModel.Password
+                });
             } catch (RecordAlreadyExistsException) {
                 throw new UserAlreadyExistsException();
             }
