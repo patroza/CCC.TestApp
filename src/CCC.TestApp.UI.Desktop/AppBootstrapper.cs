@@ -27,7 +27,7 @@ namespace CCC.TestApp.UI.Desktop
                 Assembly.GetExecutingAssembly(), // UI - Self
                 typeof (UserRepository).Assembly, // DAL
                 typeof (UserInteractor).Assembly, // Core App
-                typeof (User).Assembly, // Core Domain
+                typeof (User).Assembly // Core Domain
                 //typeof (IWindowManager).Assembly
             };
         }
