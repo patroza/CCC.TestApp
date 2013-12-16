@@ -14,17 +14,22 @@ namespace CCC.TestApp.Core.Application.Usecases.Users
 
         public void Invoke(ShowUserRequestModel inputModel) {
             var user = GetExistingUser(inputModel.UserId);
-            _responder.Respond(new ShowUserResponseModel {UserName = user.UserName});
+            _responder.Respond(new ShowUserResponseModel {UserName = user.UserName, Id = user.Id});
         }
     }
 
     public struct ShowUserResponseModel
     {
         public string UserName { get; set; }
+        public Guid Id { get; set; }
     }
 
     public struct ShowUserRequestModel
     {
-        public Guid UserId { get; set; }
+        public ShowUserRequestModel(Guid userId) {
+            UserId = userId;
+        }
+
+        public Guid UserId;
     }
 }

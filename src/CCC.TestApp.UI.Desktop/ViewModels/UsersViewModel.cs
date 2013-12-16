@@ -10,11 +10,13 @@ namespace CCC.TestApp.UI.Desktop.ViewModels
     public class UsersViewModel : ScreenBase, IResponseBoundary<ListUsersResponseModel>
     {
         readonly Lazy<IRequestBoundary<ListUsersRequestModel>> _listUsers;
+        readonly Lazy<UserViewModel> _userViewModel;
         User _selectedUser;
         ObservableCollection<User> _users;
 
-        public UsersViewModel(Lazy<IRequestBoundary<ListUsersRequestModel>> listUsers) {
+        public UsersViewModel(Lazy<IRequestBoundary<ListUsersRequestModel>> listUsers, Lazy<UserViewModel> userViewModel) {
             _listUsers = listUsers;
+            _userViewModel = userViewModel;
 
             base.DisplayName = "Users";
         }
@@ -38,11 +40,15 @@ namespace CCC.TestApp.UI.Desktop.ViewModels
         }
 
         public void ShowSelectedUser() {
-            ShowUser(SelectedUser);
+            var selectedUser = SelectedUser;
+            if (selectedUser != null)
+                ShowUser(selectedUser);
         }
 
         public void ShowUser(User user) {
-            GetParentScreen().ActivateItem(new UserViewModel(user));
+            var userViewModel = _userViewModel.Value;
+            userViewModel.LoadUser(user.Id);
+            GetParentScreen().ActivateItem(userViewModel);
         }
 
         protected override void OnInitialize() {

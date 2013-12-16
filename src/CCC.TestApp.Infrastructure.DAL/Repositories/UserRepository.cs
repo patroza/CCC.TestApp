@@ -13,10 +13,12 @@ namespace CCC.TestApp.Infrastructure.DAL.Repositories
         public UserRepository() {
             var guid = Guid.NewGuid();
             _userList.Add(guid, new User(guid) { UserName = "Test user 1" });
+            guid = Guid.NewGuid();
+            _userList.Add(guid, new User(guid) { UserName = "Test user 2" });
         }
 
         public User Find(Guid userId) {
-            throw new NotImplementedException();
+            return _userList.ContainsKey(userId) ? _userList[userId] : null;
         }
 
         public void Update(User user) {
