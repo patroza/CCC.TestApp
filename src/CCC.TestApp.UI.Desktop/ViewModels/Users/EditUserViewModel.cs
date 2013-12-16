@@ -3,7 +3,7 @@ using CCC.TestApp.Core.Application.Usecases;
 using CCC.TestApp.Core.Application.Usecases.Users;
 using CCC.TestApp.UI.Desktop.Models;
 
-namespace CCC.TestApp.UI.Desktop.ViewModels
+namespace CCC.TestApp.UI.Desktop.ViewModels.Users
 {
     public class EditUserViewModel : ScreenBase, IResponseBoundary<UpdateUserResponseModel>
     {

@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using CCC.TestApp.UI.Desktop.ViewModels.Users;
 
 namespace CCC.TestApp.UI.Desktop.ViewModels
 {

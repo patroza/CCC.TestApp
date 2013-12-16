@@ -2,7 +2,7 @@
 using CCC.TestApp.Core.Application.Usecases;
 using CCC.TestApp.Core.Application.Usecases.Users;
 
-namespace CCC.TestApp.UI.Desktop.ViewModels
+namespace CCC.TestApp.UI.Desktop.ViewModels.Users
 {
     public class NewUserViewModel : ScreenBase, IResponseBoundary<CreateUserResponseModel>
     {
