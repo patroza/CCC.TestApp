@@ -14,7 +14,11 @@
             <RowDefinition />
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
-            <TextBlock Text="{Binding ActiveItem.DisplayName}" />
+            <DockPanel>
+                <Button Content="Back" x:Name="Back" />
+                <TextBlock Text="{Binding ActiveItem.DisplayName}"
+                           Margin="8 0 0 0" />
+            </DockPanel>
         </Grid>
         <ContentControl Grid.Row="1" x:Name="ActiveItem" />
     </Grid>

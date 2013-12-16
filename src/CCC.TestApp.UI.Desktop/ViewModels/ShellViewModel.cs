@@ -7,7 +7,13 @@ namespace CCC.TestApp.UI.Desktop.ViewModels
         public ShellViewModel(UsersViewModel users) {
             base.DisplayName = "CCC TestApp";
             Items.Add(users);
-            ActiveItem = users;
+            base.ActivateItem(users);
+        }
+
+        public void Back() {
+            var screen = ActiveItem;
+            if (screen != null)
+                screen.TryClose();
         }
     }
 }
