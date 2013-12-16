@@ -55,7 +55,7 @@ namespace CCC.TestApp.UI.Desktop
             var rb = new RegistrationBuilder();
             SetupRegistrationBuilder(rb);
             var catalog = new AggregateCatalog(SelectAssemblies().Select(x => new AssemblyCatalog(x, rb)));
-            var container = new CompositionContainer(catalog);
+            var container = new CompositionContainer(catalog, CompositionOptions.DisableSilentRejection);
             var batch = new CompositionBatch();
             SetupBatch(batch, container);
             _container = container;
@@ -77,7 +77,8 @@ namespace CCC.TestApp.UI.Desktop
                 .Export();
 
             rb.ForTypesMatching(x => x.Name.EndsWith("ViewModel"))
-                .Export();
+                .Export()
+                .ExportInterfaces();
         }
 
         static void SetupCore(RegistrationBuilder rb) {
