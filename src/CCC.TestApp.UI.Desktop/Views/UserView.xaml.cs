@@ -3,11 +3,11 @@
 namespace CCC.TestApp.UI.Desktop.Views
 {
     /// <summary>
-    ///     Interaction logic for UsersViewModel.xaml
+    ///     Interaction logic for UserView.xaml
     /// </summary>
-    public partial class UsersView : UserControl
+    public partial class UserView : UserControl
     {
-        public UsersView() {
+        public UserView() {
             InitializeComponent();
         }
     }
