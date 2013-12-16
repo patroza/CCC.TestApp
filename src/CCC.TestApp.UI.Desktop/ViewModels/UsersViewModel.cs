@@ -13,11 +13,12 @@ namespace CCC.TestApp.UI.Desktop.ViewModels
     {
         readonly Lazy<IRequestBoundary<ListUsersRequestModel>> _listUsers;
         readonly Lazy<NewUserViewModel> _newUserViewModel;
-        readonly Lazy<UserViewModel> _userViewModel;
+        readonly Lazy<ShowUserViewModel> _userViewModel;
         UserModel _selectedUser;
         ObservableCollection<UserModel> _users;
 
-        public UsersViewModel(Lazy<IRequestBoundary<ListUsersRequestModel>> listUsers, Lazy<UserViewModel> userViewModel,
+        public UsersViewModel(Lazy<IRequestBoundary<ListUsersRequestModel>> listUsers,
+            Lazy<ShowUserViewModel> userViewModel,
             Lazy<NewUserViewModel> newUserViewModel) {
             _listUsers = listUsers;
             _userViewModel = userViewModel;
@@ -40,10 +41,6 @@ namespace CCC.TestApp.UI.Desktop.ViewModels
             Users = new ObservableCollection<UserModel>(model.Users.Select(Mapper.DynamicMap<UserModel>));
         }
 
-        IConductor GetParentScreen() {
-            return (IConductor) Parent;
-        }
-
         public void NewUser() {
             if (!_newUserViewModel.IsValueCreated)
                 _newUserViewModel.Value.Deactivated += ValueOnDeactivated;
@@ -61,6 +58,9 @@ namespace CCC.TestApp.UI.Desktop.ViewModels
         }
 
         public void ShowUser(UserModel user) {
+            if (!_userViewModel.IsValueCreated)
+                _userViewModel.Value.Deactivated += ValueOnDeactivated;
+
             var userViewModel = _userViewModel.Value;
             userViewModel.LoadUser(user.Id);
             GetParentScreen().ActivateItem(userViewModel);
@@ -72,39 +72,6 @@ namespace CCC.TestApp.UI.Desktop.ViewModels
 
         void LoadList() {
             _listUsers.Value.Invoke(new ListUsersRequestModel());
-        }
-    }
-
-    public class NewUserViewModel : ScreenBase, IResponseBoundary<CreateUserResponseModel>
-    {
-        readonly Lazy<IRequestBoundary<CreateUserRequestModel>> _createUser;
-        string _password;
-        string _userName;
-
-        public NewUserViewModel(Lazy<IRequestBoundary<CreateUserRequestModel>> createUser) {
-            _createUser = createUser;
-        }
-
-        public string UserName {
-            get { return _userName; }
-            set { SetProperty(ref _userName, value); }
-        }
-
-        public string Password {
-            get { return _password; }
-            set { SetProperty(ref _password, value); }
-        }
-
-        public void Respond(CreateUserResponseModel model) {
-            TryClose();
-        }
-
-        public void OK() {
-            _createUser.Value.Invoke(new CreateUserRequestModel {UserName = UserName, Password = Password});
-        }
-
-        public void Cancel() {
-            TryClose();
         }
     }
 }

@@ -14,5 +14,9 @@ namespace CCC.TestApp.UI.Desktop.ViewModels
             NotifyOfPropertyChange(propertyName);
             return true;
         }
+
+        protected IConductor GetParentScreen() {
+            return (IConductor) Parent;
+        }
     }
 }

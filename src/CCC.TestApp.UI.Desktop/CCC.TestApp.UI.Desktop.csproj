@@ -72,10 +72,15 @@
     <Compile Include="AppBootstrapper.cs" />
     <Compile Include="Models\ModelBase.cs" />
     <Compile Include="Models\UserModel.cs" />
+    <Compile Include="ViewModels\EditUserViewModel.cs" />
+    <Compile Include="ViewModels\NewUserViewModel.cs" />
     <Compile Include="ViewModels\ScreenBase.cs" />
     <Compile Include="ViewModels\UsersViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
-    <Compile Include="ViewModels\UserViewModel.cs" />
+    <Compile Include="ViewModels\ShowUserViewModel.cs" />
+    <Compile Include="Views\EditUserView.xaml.cs">
+      <DependentUpon>EditUserView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\NewUserView.xaml.cs">
       <DependentUpon>NewUserView.xaml</DependentUpon>
     </Compile>
@@ -89,9 +94,13 @@
     <Compile Include="Views\UsersView.xaml.cs">
       <DependentUpon>UsersView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\UserView.xaml.cs">
-      <DependentUpon>UserView.xaml</DependentUpon>
+    <Compile Include="Views\ShowUserView.xaml.cs">
+      <DependentUpon>ShowUserView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\EditUserView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\NewUserView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -104,7 +113,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\UserView.xaml">
+    <Page Include="Views\ShowUserView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

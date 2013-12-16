@@ -25,11 +25,23 @@ namespace CCC.TestApp.Infrastructure.DAL.Repositories
         }
 
         public void Update(User user) {
-            throw new NotImplementedException();
+            lock (_userList) {
+                if (!_userList.ContainsKey(user.Id))
+                    throw new RecordDoesntExistException();
+                var existingRecord = _userList[user.Id];
+                Mapper.DynamicMap(user, existingRecord);
+            }
         }
 
         public void Destroy(User user) {
-            throw new NotImplementedException();
+            lock (_userList) {
+                var guid = user.Id;
+                if (!_userList.ContainsKey(guid))
+                    throw new RecordDoesntExistException();
+                var record = _userList[guid];
+                _userList.Remove(guid);
+                record.Id = new Guid();
+            }
         }
 
         public void Create(User user) {
@@ -39,7 +51,10 @@ namespace CCC.TestApp.Infrastructure.DAL.Repositories
 
                 var userRow = Mapper.DynamicMap<UserRow>(user);
                 userRow.Id = Guid.NewGuid();
-                _userList.Add(userRow.Id, Mapper.DynamicMap<UserRow>(user));
+                if (_userList.ContainsKey(userRow.Id))
+                    throw new RecordAlreadyExistsException();
+
+                _userList.Add(userRow.Id, userRow);
             }
         }
 

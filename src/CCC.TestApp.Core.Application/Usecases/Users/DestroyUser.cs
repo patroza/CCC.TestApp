@@ -15,7 +15,11 @@ namespace CCC.TestApp.Core.Application.Usecases.Users
 
         public void Invoke(DestroyUserRequestModel inputModel) {
             var user = GetExistingUser(inputModel.UserId);
-            UserRepository.Destroy(user);
+            try {
+                UserRepository.Destroy(user);
+            } catch (RecordDoesntExistException) {
+                throw new UserDoesntExistException();
+            }
             _responder.Respond(new DestroyUserResponseModel());
         }
     }

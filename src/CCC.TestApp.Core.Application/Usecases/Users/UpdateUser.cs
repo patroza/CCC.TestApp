@@ -15,6 +15,7 @@ namespace CCC.TestApp.Core.Application.Usecases.Users
         public void Invoke(UpdateUserRequestModel inputModel) {
             var user = GetExistingUser(inputModel.UserId);
             user.UserName = inputModel.UserName;
+            user.Password = inputModel.Password;
             UserRepository.Update(user);
             _responder.Respond(new UpdateUserResponseModel());
         }
@@ -24,6 +25,7 @@ namespace CCC.TestApp.Core.Application.Usecases.Users
     {
         public Guid UserId { get; set; }
         public string UserName { get; set; }
+        public string Password { get; set; }
     }
 
     public struct UpdateUserResponseModel {}

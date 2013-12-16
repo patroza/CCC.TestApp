@@ -4,8 +4,8 @@ namespace CCC.TestApp.Core.Application.DALInterfaces
 {
     public class RecordDoesntExistException : Exception
     {
-        protected RecordDoesntExistException(string message) : base(message) {}
+        public RecordDoesntExistException(string message) : base(message) {}
 
-        protected RecordDoesntExistException() {}
+        public RecordDoesntExistException() {}
     }
 }

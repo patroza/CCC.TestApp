@@ -14,16 +14,17 @@ namespace CCC.TestApp.Core.Application.Usecases.Users
         }
 
         public void Invoke(CreateUserRequestModel inputModel) {
+            // TODO: AutoMapper?
+            var newUser = new User(Guid.NewGuid()) {
+                UserName = inputModel.UserName,
+                Password = inputModel.Password
+            };
             try {
-                // TODO: AutoMapper?
-                UserRepository.Create(new User(Guid.NewGuid()) {
-                    UserName = inputModel.UserName,
-                    Password = inputModel.Password
-                });
+                UserRepository.Create(newUser);
             } catch (RecordAlreadyExistsException) {
                 throw new UserAlreadyExistsException();
             }
-            _responder.Respond(new CreateUserResponseModel());
+            _responder.Respond(new CreateUserResponseModel {Id = newUser.Id});
         }
     }
 
@@ -37,7 +38,6 @@ namespace CCC.TestApp.Core.Application.Usecases.Users
 
     public struct CreateUserResponseModel
     {
-        public bool Succeeded { get; set; }
-        public string[] Errors { get; set; }
+        public Guid Id { get; set; }
     }
 }
