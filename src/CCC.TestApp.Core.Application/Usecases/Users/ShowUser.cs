@@ -26,10 +26,10 @@ namespace CCC.TestApp.Core.Application.Usecases.Users
 
     public struct ShowUserRequestModel
     {
+        public Guid UserId;
+
         public ShowUserRequestModel(Guid userId) {
             UserId = userId;
         }
-
-        public Guid UserId;
     }
 }

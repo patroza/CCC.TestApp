@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using CCC.TestApp.Core.Application.DALInterfaces;
-using CCC.TestApp.Core.Domain.Entities;
 
 namespace CCC.TestApp.Core.Application.Usecases.Users
 {
@@ -14,13 +14,15 @@ namespace CCC.TestApp.Core.Application.Usecases.Users
         }
 
         public void Invoke(ListUsersRequestModel inputModel) {
-            _responder.Respond(new ListUsersResponseModel {Users = UserRepository.All()});
+            _responder.Respond(new ListUsersResponseModel {
+                Users = UserRepository.All().Select(x => new {x.Id, x.UserName}).ToList<object>()
+            });
         }
     }
 
     public struct ListUsersResponseModel
     {
-        public List<User> Users { get; set; }
+        public List<object> Users { get; set; }
     }
 
     public struct ListUsersRequestModel {}
