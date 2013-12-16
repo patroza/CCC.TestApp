@@ -4,7 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:entities="clr-namespace:CCC.TestApp.Core.Domain.Entities;assembly=CCC.TestApp.Core.Domain"
+             xmlns:viewModels="clr-namespace:CCC.TestApp.UI.Desktop.ViewModels"
+             xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance viewModels:UsersViewModel}" cal:Bind.AtDesignTime="True"
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
         <ListBox x:Name="Users">

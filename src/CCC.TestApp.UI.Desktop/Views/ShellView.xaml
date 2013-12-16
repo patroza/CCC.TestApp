@@ -1,6 +1,21 @@
 ﻿<Window x:Class="CCC.TestApp.UI.Desktop.Views.ShellView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="350" Width="525">
-    <ContentControl x:Name="ActiveItem" />
+        Height="350" Width="525"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:viewModels="clr-namespace:CCC.TestApp.UI.Desktop.ViewModels"
+        xmlns:cal="http://www.caliburnproject.org"
+        mc:Ignorable="d" cal:Bind.AtDesignTime="True"
+        d:DataContext="{d:DesignInstance viewModels:ShellViewModel}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="24" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <TextBlock Text="{Binding ActiveItem.DisplayName}" />
+        </Grid>
+        <ContentControl Grid.Row="1" x:Name="ActiveItem" />
+    </Grid>
 </Window>

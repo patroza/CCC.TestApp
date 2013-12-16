@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Caliburn.Micro;
 using CCC.TestApp.Core.Application.Usecases;
 using CCC.TestApp.Core.Application.Usecases.Users;
@@ -17,14 +14,8 @@ namespace CCC.TestApp.UI.Desktop.ViewModels
 
         public UsersViewModel(Lazy<IRequestBoundary<ListUsersRequestModel>> listUsers) {
             _listUsers = listUsers;
-        }
 
-        protected override void OnInitialize() {
-            _listUsers.Value.Invoke(new ListUsersRequestModel());
-        }
-
-        public void Respond(ListUsersResponseModel model) {
-            Users = model.Users;
+            base.DisplayName = "Users";
         }
 
         public List<User> Users {
@@ -33,6 +24,14 @@ namespace CCC.TestApp.UI.Desktop.ViewModels
                 _users = value;
                 NotifyOfPropertyChange();
             }
+        }
+
+        public void Respond(ListUsersResponseModel model) {
+            Users = model.Users;
+        }
+
+        protected override void OnInitialize() {
+            _listUsers.Value.Invoke(new ListUsersRequestModel());
         }
     }
 }
