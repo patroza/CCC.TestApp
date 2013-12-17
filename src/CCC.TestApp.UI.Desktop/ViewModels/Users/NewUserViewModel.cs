@@ -1,5 +1,4 @@
-﻿using System;
-using CCC.TestApp.Core.Application.Usecases;
+﻿using CCC.TestApp.Core.Application.Usecases;
 using CCC.TestApp.Core.Application.Usecases.Users;
 
 namespace CCC.TestApp.UI.Desktop.ViewModels.Users

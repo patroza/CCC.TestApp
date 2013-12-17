@@ -1,5 +1,4 @@
-﻿using System;
-using CCC.TestApp.Core.Application.Usecases;
+﻿using CCC.TestApp.Core.Application.Usecases;
 using CCC.TestApp.Core.Application.Usecases.Users;
 using CCC.TestApp.UI.Desktop.Models;
 
@@ -14,7 +13,6 @@ namespace CCC.TestApp.UI.Desktop.ViewModels.Users
 
         public EditUserViewModel(IUpdateUserRequestBoundary updateUser) {
             _updateUser = updateUser;
-
             base.DisplayName = "Edit User";
         }
 

@@ -23,11 +23,6 @@ namespace CCC.TestApp.UI.Desktop.ViewModels.Users
             base.DisplayName = "Show User";
         }
 
-        protected override void OnInitialize() {
-            base.OnInitialize();
-            _editUser.Deactivated += ValueOnDeactivated;
-        }
-
         public UserModel User {
             get { return _user; }
             private set { SetProperty(ref _user, value); }
@@ -39,6 +34,11 @@ namespace CCC.TestApp.UI.Desktop.ViewModels.Users
 
         public void Respond(ShowUserResponseModel model) {
             User = Mapper.DynamicMap<UserModel>(model);
+        }
+
+        protected override void OnInitialize() {
+            base.OnInitialize();
+            _editUser.Deactivated += ValueOnDeactivated;
         }
 
         public void Destroy() {

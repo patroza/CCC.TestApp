@@ -5,10 +5,16 @@ namespace CCC.TestApp.UI.Desktop.ViewModels
 {
     public class ShellViewModel : Conductor<IScreen>.Collection.OneActive
     {
+        readonly UsersViewModel _users;
+
         public ShellViewModel(UsersViewModel users) {
+            _users = users;
             base.DisplayName = "CCC TestApp";
-            Items.Add(users);
-            base.ActivateItem(users);
+        }
+
+        protected override void OnInitialize() {
+            base.OnInitialize();
+            base.ActivateItem(_users);
         }
 
         public void Back() {
