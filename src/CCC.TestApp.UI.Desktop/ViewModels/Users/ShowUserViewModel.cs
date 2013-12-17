@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.Composition;
 using AutoMapper;
 using Caliburn.Micro;
 using CCC.TestApp.Core.Application.Usecases;
@@ -11,12 +12,13 @@ namespace CCC.TestApp.UI.Desktop.ViewModels.Users
         IResponseBoundary<DestroyUserResponseModel>
     {
         readonly IDestroyUserRequestBoundary _destroyUser;
-        readonly Lazy<EditUserViewModel> _editUser;
+        readonly ExportFactory<EditUserViewModel> _editUser;
         readonly IShowUserRequestBoundary _showUser;
+        ExportLifetimeContext<EditUserViewModel> _editUserContext;
         UserModel _user;
 
         public ShowUserViewModel(IShowUserRequestBoundary showUser,
-            IDestroyUserRequestBoundary destroyUser, Lazy<EditUserViewModel> editUser) {
+            IDestroyUserRequestBoundary destroyUser, ExportFactory<EditUserViewModel> editUser) {
             _showUser = showUser;
             _destroyUser = destroyUser;
             _editUser = editUser;
@@ -41,14 +43,15 @@ namespace CCC.TestApp.UI.Desktop.ViewModels.Users
         }
 
         public void Edit() {
-            if (!_editUser.IsValueCreated)
-                _editUser.Value.Deactivated += ValueOnDeactivated;
-
-            _editUser.Value.LoadUser(_user);
-            GetParentScreen().ActivateItem(_editUser.Value);
+            _editUserContext = _editUser.CreateExport();
+            _editUserContext.Value.Deactivated += EditUserDeactivated;
+            _editUserContext.Value.LoadUser(_user);
+            GetParentScreen().ActivateItem(_editUserContext.Value);
         }
 
-        void ValueOnDeactivated(object sender, DeactivationEventArgs deactivationEventArgs) {
+        void EditUserDeactivated(object sender, DeactivationEventArgs deactivationEventArgs) {
+            _editUserContext.Value.Deactivated -= EditUserDeactivated;
+            _editUserContext.Dispose();
             LoadUser(_user.Id);
         }
 

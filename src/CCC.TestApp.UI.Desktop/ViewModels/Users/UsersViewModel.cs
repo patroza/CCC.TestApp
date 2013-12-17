@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel.Composition;
 using System.Linq;
 using AutoMapper;
 using Caliburn.Micro;
@@ -12,17 +12,19 @@ namespace CCC.TestApp.UI.Desktop.ViewModels.Users
     public class UsersViewModel : ScreenBase, IResponseBoundary<ListUsersResponseModel>
     {
         readonly IListUsersRequestBoundary _listUsers;
-        readonly Lazy<NewUserViewModel> _newUserViewModel;
-        readonly Lazy<ShowUserViewModel> _userViewModel;
+        readonly ExportFactory<NewUserViewModel> _newUserViewModelFactory;
+        readonly ExportFactory<ShowUserViewModel> _userViewModelFactory;
+        ExportLifetimeContext<NewUserViewModel> _newUserContext;
         UserModel _selectedUser;
+        ExportLifetimeContext<ShowUserViewModel> _showUserContext;
         ObservableCollection<UserModel> _users;
 
         public UsersViewModel(IListUsersRequestBoundary listUsers,
-            Lazy<ShowUserViewModel> userViewModel,
-            Lazy<NewUserViewModel> newUserViewModel) {
+            ExportFactory<ShowUserViewModel> userViewModelFactory,
+            ExportFactory<NewUserViewModel> newUserViewModelFactory) {
             _listUsers = listUsers;
-            _userViewModel = userViewModel;
-            _newUserViewModel = newUserViewModel;
+            _userViewModelFactory = userViewModelFactory;
+            _newUserViewModelFactory = newUserViewModelFactory;
 
             base.DisplayName = "Users";
         }
@@ -42,12 +44,22 @@ namespace CCC.TestApp.UI.Desktop.ViewModels.Users
         }
 
         public void NewUser() {
-            if (!_newUserViewModel.IsValueCreated)
-                _newUserViewModel.Value.Deactivated += ValueOnDeactivated;
-            GetParentScreen().ActivateItem(_newUserViewModel.Value);
+            _newUserContext = _newUserViewModelFactory.CreateExport();
+            _newUserContext.Value.Deactivated += NewUserDeactivated;
+            GetParentScreen().ActivateItem(_newUserContext.Value);
         }
 
-        void ValueOnDeactivated(object sender, DeactivationEventArgs deactivationEventArgs) {
+        void NewUserDeactivated(object sender, DeactivationEventArgs deactivationEventArgs) {
+            _newUserContext.Value.Deactivated -= NewUserDeactivated;
+            _newUserContext.Dispose();
+            _newUserContext = null;
+            LoadList();
+        }
+
+        void ShowUserDeactivated(object sender, DeactivationEventArgs deactivationEventArgs) {
+            _showUserContext.Value.Deactivated -= ShowUserDeactivated;
+            _showUserContext.Dispose();
+            _showUserContext = null;
             LoadList();
         }
 
@@ -58,12 +70,10 @@ namespace CCC.TestApp.UI.Desktop.ViewModels.Users
         }
 
         public void ShowUser(UserModel user) {
-            if (!_userViewModel.IsValueCreated)
-                _userViewModel.Value.Deactivated += ValueOnDeactivated;
-
-            var userViewModel = _userViewModel.Value;
-            userViewModel.LoadUser(user.Id);
-            GetParentScreen().ActivateItem(userViewModel);
+            _showUserContext = _userViewModelFactory.CreateExport();
+            _showUserContext.Value.Deactivated += ShowUserDeactivated;
+            _showUserContext.Value.LoadUser(user.Id);
+            GetParentScreen().ActivateItem(_showUserContext.Value);
         }
 
         protected override void OnInitialize() {
