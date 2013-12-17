@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DALInterfaces\IRepository.cs" />
     <Compile Include="DALInterfaces\IUserRepository.cs" />
     <Compile Include="DALInterfaces\RecordAlreadyExistsException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

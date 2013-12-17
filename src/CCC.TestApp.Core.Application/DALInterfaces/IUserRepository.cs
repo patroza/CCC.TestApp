@@ -1,15 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using CCC.TestApp.Core.Domain.Entities;
+﻿using CCC.TestApp.Core.Domain.Entities;
 
 namespace CCC.TestApp.Core.Application.DALInterfaces
 {
-    public interface IUserRepository
-    {
-        User Find(Guid userId);
-        void Update(User user);
-        void Destroy(Guid userId);
-        void Create(User user);
-        List<User> All();
-    }
+    public interface IUserRepository : IRepository<User> {}
 }
