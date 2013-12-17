@@ -11,12 +11,12 @@ namespace CCC.TestApp.UI.Desktop.ViewModels.Users
         IResponseBoundary<DestroyUserResponseModel>
     {
         readonly IDestroyUserRequestBoundary _destroyUser;
-        readonly EditUserViewModel _editUser;
+        readonly Lazy<EditUserViewModel> _editUser;
         readonly IShowUserRequestBoundary _showUser;
         UserModel _user;
 
         public ShowUserViewModel(IShowUserRequestBoundary showUser,
-            IDestroyUserRequestBoundary destroyUser, EditUserViewModel editUser) {
+            IDestroyUserRequestBoundary destroyUser, Lazy<EditUserViewModel> editUser) {
             _showUser = showUser;
             _destroyUser = destroyUser;
             _editUser = editUser;
@@ -36,18 +36,16 @@ namespace CCC.TestApp.UI.Desktop.ViewModels.Users
             User = Mapper.DynamicMap<UserModel>(model);
         }
 
-        protected override void OnInitialize() {
-            base.OnInitialize();
-            _editUser.Deactivated += ValueOnDeactivated;
-        }
-
         public void Destroy() {
             _destroyUser.Invoke(new DestroyUserRequestModel {UserId = _user.Id}, this);
         }
 
         public void Edit() {
-            _editUser.LoadUser(_user);
-            GetParentScreen().ActivateItem(_editUser);
+            if (!_editUser.IsValueCreated)
+                _editUser.Value.Deactivated += ValueOnDeactivated;
+
+            _editUser.Value.LoadUser(_user);
+            GetParentScreen().ActivateItem(_editUser.Value);
         }
 
         void ValueOnDeactivated(object sender, DeactivationEventArgs deactivationEventArgs) {
