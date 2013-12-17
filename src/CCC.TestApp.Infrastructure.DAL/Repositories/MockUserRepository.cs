@@ -19,7 +19,7 @@ namespace CCC.TestApp.Infrastructure.DAL.Repositories
             _userList.Add(guid, new UserRow {Id = guid, UserName = "Test user 2"});
         }
 
-        public User Find(Guid userId) {
+        public User Get(Guid userId) {
             lock (_userList)
                 return _userList.ContainsKey(userId) ? Mapper.DynamicMap<User>(_userList[userId]) : null;
         }

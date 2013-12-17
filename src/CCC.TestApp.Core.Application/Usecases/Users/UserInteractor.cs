@@ -13,7 +13,7 @@ namespace CCC.TestApp.Core.Application.Usecases.Users
         }
 
         protected User GetExistingUser(Guid userId) {
-            var user = UserRepository.Find(userId);
+            var user = UserRepository.Get(userId);
             ConfirmUserExists(user);
             return user;
         }
