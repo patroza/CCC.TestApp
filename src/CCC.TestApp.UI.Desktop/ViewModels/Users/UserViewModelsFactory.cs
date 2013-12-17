@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel.Composition;
-using CCC.TestApp.UI.Desktop.Models;
 
 namespace CCC.TestApp.UI.Desktop.ViewModels.Users
 {
@@ -15,7 +14,7 @@ namespace CCC.TestApp.UI.Desktop.ViewModels.Users
             _showUserFactory = showUserFactory;
         }
 
-        public Func<UserModel, ExportLifetimeContext<EditUserViewModel>> EditUser {
+        public Func<Guid, ExportLifetimeContext<EditUserViewModel>> EditUser {
             get { return _editUser; }
         }
 
@@ -23,9 +22,9 @@ namespace CCC.TestApp.UI.Desktop.ViewModels.Users
             get { return _showUser; }
         }
 
-        ExportLifetimeContext<EditUserViewModel> _editUser(UserModel user) {
+        ExportLifetimeContext<EditUserViewModel> _editUser(Guid userId) {
             var editUser = _editUserFactory.CreateExport();
-            editUser.Value.LoadUser(user);
+            editUser.Value.LoadUser(userId);
             return editUser;
         }
 

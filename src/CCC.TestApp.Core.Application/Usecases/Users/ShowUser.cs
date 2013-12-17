@@ -13,7 +13,7 @@ namespace CCC.TestApp.Core.Application.Usecases.Users
 
         ShowUserResponseModel CreateResponseModel(ShowUserRequestModel inputModel) {
             var user = GetExistingUser(inputModel.UserId);
-            return new ShowUserResponseModel {UserName = user.UserName, Id = user.Id};
+            return new ShowUserResponseModel {UserName = user.UserName, Password = user.Password, Id = user.Id};
         }
     }
 
@@ -24,6 +24,7 @@ namespace CCC.TestApp.Core.Application.Usecases.Users
     {
         public string UserName { get; set; }
         public Guid Id { get; set; }
+        public string Password { get; set; }
     }
 
     public struct ShowUserRequestModel : IRequestModel

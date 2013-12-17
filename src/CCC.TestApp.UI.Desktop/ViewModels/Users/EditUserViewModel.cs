@@ -1,18 +1,21 @@
-﻿using CCC.TestApp.Core.Application.Usecases;
+﻿using System;
+using CCC.TestApp.Core.Application.Usecases;
 using CCC.TestApp.Core.Application.Usecases.Users;
-using CCC.TestApp.UI.Desktop.Models;
 
 namespace CCC.TestApp.UI.Desktop.ViewModels.Users
 {
-    public class EditUserViewModel : ScreenBase, IResponseBoundary<UpdateUserResponseModel>
+    public class EditUserViewModel : ScreenBase, IResponseBoundary<UpdateUserResponseModel>,
+        IResponseBoundary<ShowUserResponseModel>
     {
+        readonly IShowUserRequestBoundary _showUser;
         readonly IUpdateUserRequestBoundary _updateUser;
         string _password;
-        UserModel _user;
+        Guid _userId;
         string _userName;
 
-        public EditUserViewModel(IUpdateUserRequestBoundary updateUser) {
+        public EditUserViewModel(IShowUserRequestBoundary showUser, IUpdateUserRequestBoundary updateUser) {
             _updateUser = updateUser;
+            _showUser = showUser;
             base.DisplayName = "Edit User";
         }
 
@@ -26,20 +29,24 @@ namespace CCC.TestApp.UI.Desktop.ViewModels.Users
             set { SetProperty(ref _password, value); }
         }
 
+        public void Respond(ShowUserResponseModel model) {
+            UserName = model.UserName;
+            Password = model.Password;
+        }
+
         public void Respond(UpdateUserResponseModel model) {
             Clear();
             TryClose();
         }
 
-        public void LoadUser(UserModel user) {
-            _user = user;
-            UserName = user.UserName;
-            Password = user.Password;
+        public void LoadUser(Guid userId) {
+            _userId = userId;
+            _showUser.Invoke(new ShowUserRequestModel(userId), this);
         }
 
         public void OK() {
             _updateUser.Invoke(new UpdateUserRequestModel {
-                UserId = _user.Id,
+                UserId = _userId,
                 UserName = UserName,
                 Password = Password
             }, this);
