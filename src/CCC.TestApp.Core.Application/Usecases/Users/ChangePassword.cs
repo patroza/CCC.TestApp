@@ -14,7 +14,7 @@ namespace CCC.TestApp.Core.Application.Usecases.Users
             var user = GetExistingUser(inputModel.UserId);
             Validate(inputModel, user);
             UpdateUser(inputModel, user);
-            responder.Respond(new ChangePasswordResponseModel());
+            responder.Respond(CreateResponseModel());
         }
 
         static void Validate(ChangePasswordRequestModel inputModel, User user) {
@@ -35,6 +35,10 @@ namespace CCC.TestApp.Core.Application.Usecases.Users
         void UpdateUser(ChangePasswordRequestModel inputModel, User user) {
             user.Password = inputModel.Password;
             UserRepository.Update(user);
+        }
+
+        static ChangePasswordResponseModel CreateResponseModel() {
+            return new ChangePasswordResponseModel();
         }
     }
 
