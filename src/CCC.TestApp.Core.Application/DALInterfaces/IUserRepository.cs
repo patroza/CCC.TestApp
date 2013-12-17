@@ -8,7 +8,7 @@ namespace CCC.TestApp.Core.Application.DALInterfaces
     {
         User Find(Guid userId);
         void Update(User user);
-        void Destroy(User user);
+        void Destroy(Guid userId);
         void Create(User user);
         List<User> All();
     }

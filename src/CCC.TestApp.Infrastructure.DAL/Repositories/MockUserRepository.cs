@@ -26,41 +26,66 @@ namespace CCC.TestApp.Infrastructure.DAL.Repositories
 
         public void Update(User user) {
             lock (_userList) {
-                if (!_userList.ContainsKey(user.Id))
-                    throw new RecordDoesntExistException();
-                var existingRecord = _userList[user.Id];
-                Mapper.DynamicMap(user, existingRecord);
+                ValidateExists(user.Id);
+                UpdateExisting(user);
             }
         }
 
-        public void Destroy(User user) {
+        public void Destroy(Guid userId) {
             lock (_userList) {
-                var guid = user.Id;
-                if (!_userList.ContainsKey(guid))
-                    throw new RecordDoesntExistException();
-                var record = _userList[guid];
-                _userList.Remove(guid);
-                record.Id = new Guid();
+                ValidateExists(userId);
+                DestroyRecord(userId);
             }
         }
 
         public void Create(User user) {
             lock (_userList) {
-                if (_userList.Values.Any(x => x.UserName.Equals(user.UserName)))
-                    throw new RecordAlreadyExistsException();
-
-                var userRow = Mapper.DynamicMap<UserRow>(user);
-                userRow.Id = Guid.NewGuid();
-                if (_userList.ContainsKey(userRow.Id))
-                    throw new RecordAlreadyExistsException();
-
-                _userList.Add(userRow.Id, userRow);
+                ValidateDoesntExistYet(user.UserName);
+                var userRow = CreateUserRow(user);
+                ValidateDoesntExistYet(userRow.Id);
+                AddToStorage(userRow);
             }
         }
 
         public List<User> All() {
             lock (_userList)
                 return _userList.Values.Select(Mapper.DynamicMap<User>).ToList();
+        }
+
+        void UpdateExisting(User user) {
+            var existingRecord = _userList[user.Id];
+            Mapper.DynamicMap(user, existingRecord);
+        }
+
+        void ValidateExists(Guid userId) {
+            if (!_userList.ContainsKey(userId))
+                throw new RecordDoesntExistException();
+        }
+
+        void DestroyRecord(Guid userId) {
+            var record = _userList[userId];
+            _userList.Remove(userId);
+            record.Id = new Guid();
+        }
+
+        void AddToStorage(UserRow userRow) {
+            _userList.Add(userRow.Id, userRow);
+        }
+
+        static UserRow CreateUserRow(User user) {
+            var userRow = Mapper.DynamicMap<UserRow>(user);
+            userRow.Id = Guid.NewGuid();
+            return userRow;
+        }
+
+        void ValidateDoesntExistYet(string userName) {
+            if (_userList.Values.Any(x => x.UserName.Equals(userName)))
+                throw new RecordAlreadyExistsException();
+        }
+
+        void ValidateDoesntExistYet(Guid userId) {
+            if (_userList.ContainsKey(userId))
+                throw new RecordAlreadyExistsException();
         }
     }
 }

@@ -8,13 +8,20 @@ namespace CCC.TestApp.Core.Application.Usecases.Users
         public DestroyUserInteractor(IUserRepository userRepository) : base(userRepository) {}
 
         public void Invoke(DestroyUserRequestModel inputModel, IResponseBoundary<DestroyUserResponseModel> responder) {
-            var user = GetExistingUser(inputModel.UserId);
+            TryDestroyUser(inputModel.UserId);
+            responder.Respond(CreateResponseModel());
+        }
+
+        void TryDestroyUser(Guid userId) {
             try {
-                UserRepository.Destroy(user);
+                UserRepository.Destroy(userId);
             } catch (RecordDoesntExistException) {
                 throw new UserDoesntExistException();
             }
-            responder.Respond(new DestroyUserResponseModel());
+        }
+
+        static DestroyUserResponseModel CreateResponseModel() {
+            return new DestroyUserResponseModel();
         }
     }
 

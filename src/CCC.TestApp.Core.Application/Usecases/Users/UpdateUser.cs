@@ -8,11 +8,19 @@ namespace CCC.TestApp.Core.Application.Usecases.Users
         public UpdateUserInteractor(IUserRepository userRepository) : base(userRepository) {}
 
         public void Invoke(UpdateUserRequestModel inputModel, IResponseBoundary<UpdateUserResponseModel> responder) {
+            UpdateUser(inputModel);
+            responder.Respond(CreateResponseModel());
+        }
+
+        void UpdateUser(UpdateUserRequestModel inputModel) {
             var user = GetExistingUser(inputModel.UserId);
             user.UserName = inputModel.UserName;
             user.Password = inputModel.Password;
             UserRepository.Update(user);
-            responder.Respond(new UpdateUserResponseModel());
+        }
+
+        static UpdateUserResponseModel CreateResponseModel() {
+            return new UpdateUserResponseModel();
         }
     }
 

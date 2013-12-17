@@ -12,24 +12,29 @@ namespace CCC.TestApp.Core.Application.Usecases.Users
         public void Invoke(ChangePasswordRequestModel inputModel,
             IResponseBoundary<ChangePasswordResponseModel> responder) {
             var user = GetExistingUser(inputModel.UserId);
-
-            var response = new ChangePasswordResponseModel();
-            ConfirmPasswordConfirmation(inputModel);
-            ConfirmOldPassword(inputModel, user);
-
-            user.Password = inputModel.Password;
-            UserRepository.Update(user);
-            responder.Respond(response);
+            Validate(inputModel, user);
+            UpdateUser(inputModel, user);
+            responder.Respond(new ChangePasswordResponseModel());
         }
 
-        static void ConfirmOldPassword(ChangePasswordRequestModel inputModel, User user) {
+        static void Validate(ChangePasswordRequestModel inputModel, User user) {
+            ValidatePasswordConfirmation(inputModel);
+            ValidateOldPassword(inputModel, user);
+        }
+
+        static void ValidateOldPassword(ChangePasswordRequestModel inputModel, User user) {
             if (!inputModel.OldPassword.Equals(user.Password))
                 throw new OldPasswordMismatchException();
         }
 
-        static void ConfirmPasswordConfirmation(ChangePasswordRequestModel inputModel) {
+        static void ValidatePasswordConfirmation(ChangePasswordRequestModel inputModel) {
             if (!inputModel.Password.Equals(inputModel.PasswordConfirmation))
                 throw new PasswordConfirmationMismatchException();
+        }
+
+        void UpdateUser(ChangePasswordRequestModel inputModel, User user) {
+            user.Password = inputModel.Password;
+            UserRepository.Update(user);
         }
     }
 

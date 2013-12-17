@@ -8,8 +8,12 @@ namespace CCC.TestApp.Core.Application.Usecases.Users
         public ShowUserInteractor(IUserRepository userRepository) : base(userRepository) {}
 
         public void Invoke(ShowUserRequestModel inputModel, IResponseBoundary<ShowUserResponseModel> responder) {
+            responder.Respond(CreateResponseModel(inputModel));
+        }
+
+        ShowUserResponseModel CreateResponseModel(ShowUserRequestModel inputModel) {
             var user = GetExistingUser(inputModel.UserId);
-            responder.Respond(new ShowUserResponseModel {UserName = user.UserName, Id = user.Id});
+            return new ShowUserResponseModel {UserName = user.UserName, Id = user.Id};
         }
     }
 

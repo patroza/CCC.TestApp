@@ -9,17 +9,29 @@ namespace CCC.TestApp.Core.Application.Usecases.Users
         public CreateUserInteractor(IUserRepository userRepository) : base(userRepository) {}
 
         public void Invoke(CreateUserRequestModel inputModel, IResponseBoundary<CreateUserResponseModel> responder) {
+            var newUser = CreateUser(inputModel);
+            TryPersistUser(newUser);
+            responder.Respond(CreateResponseModel(newUser));
+        }
+
+        static User CreateUser(CreateUserRequestModel inputModel) {
             // TODO: AutoMapper?
-            var newUser = new User(Guid.NewGuid()) {
+            return new User(Guid.NewGuid()) {
                 UserName = inputModel.UserName,
                 Password = inputModel.Password
             };
+        }
+
+        void TryPersistUser(User newUser) {
             try {
                 UserRepository.Create(newUser);
             } catch (RecordAlreadyExistsException) {
                 throw new UserAlreadyExistsException();
             }
-            responder.Respond(new CreateUserResponseModel {Id = newUser.Id});
+        }
+
+        static CreateUserResponseModel CreateResponseModel(User newUser) {
+            return new CreateUserResponseModel { Id = newUser.Id };
         }
     }
 

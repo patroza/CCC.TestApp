@@ -9,9 +9,17 @@ namespace CCC.TestApp.Core.Application.Usecases.Users
         public ListUsersInteractor(IUserRepository userRepository) : base(userRepository) {}
 
         public void Invoke(ListUsersRequestModel inputModel, IResponseBoundary<ListUsersResponseModel> responder) {
-            responder.Respond(new ListUsersResponseModel {
-                Users = UserRepository.All().Select(x => new {x.Id, x.UserName}).ToList<object>()
-            });
+            responder.Respond(CreateResponseModel());
+        }
+
+        ListUsersResponseModel CreateResponseModel() {
+            return new ListUsersResponseModel {
+                Users = GetUsers()
+            };
+        }
+
+        List<object> GetUsers() {
+            return UserRepository.All().Select(x => new {x.Id, x.UserName}).ToList<object>();
         }
     }
 
