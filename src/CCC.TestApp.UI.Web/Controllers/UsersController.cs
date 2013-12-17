@@ -12,18 +12,18 @@ namespace CCC.TestApp.UI.Web.Controllers
         IResponseBoundary<DestroyUserResponseModel>, IResponseBoundary<UpdateUserResponseModel>,
         IResponseBoundary<ShowUserResponseModel>
     {
-        readonly Lazy<IRequestBoundary<ChangePasswordRequestModel>> _changePassword;
-        readonly Lazy<IRequestBoundary<CreateUserRequestModel>> _create;
-        readonly Lazy<IRequestBoundary<DestroyUserRequestModel>> _destroy;
-        readonly Lazy<IRequestBoundary<ShowUserRequestModel>> _show;
-        readonly Lazy<IRequestBoundary<UpdateUserRequestModel>> _update;
+        readonly Lazy<IChangePasswordRequestBoundary> _changePassword;
+        readonly Lazy<ICreateUserRequestBoundary> _create;
+        readonly Lazy<IDestroyUserRequestBoundary> _destroy;
+        readonly Lazy<IShowUserRequestBoundary> _show;
+        readonly Lazy<IUpdateUserRequestBoundary> _update;
 
         ActionResult _response;
 
-        public UsersController(Lazy<IRequestBoundary<ChangePasswordRequestModel>> changePassword,
-            Lazy<IRequestBoundary<CreateUserRequestModel>> create, Lazy<IRequestBoundary<ShowUserRequestModel>> show,
-            Lazy<IRequestBoundary<DestroyUserRequestModel>> destroy,
-            Lazy<IRequestBoundary<UpdateUserRequestModel>> update) {
+        public UsersController(Lazy<IChangePasswordRequestBoundary> changePassword,
+            Lazy<ICreateUserRequestBoundary> create, Lazy<IShowUserRequestBoundary> show,
+            Lazy<IDestroyUserRequestBoundary> destroy,
+            Lazy<IUpdateUserRequestBoundary> update) {
             _changePassword = changePassword;
             _create = create;
             _show = show;
@@ -36,7 +36,8 @@ namespace CCC.TestApp.UI.Web.Controllers
                 return View(model);
 
             try {
-                _create.Value.Invoke(new CreateUserRequestModel {UserName = model.UserName, Password = model.Password});
+                _create.Value.Invoke(new CreateUserRequestModel {UserName = model.UserName, Password = model.Password},
+                    this);
                 return _response;
             } catch (UserAlreadyExistsException) {
                 ModelState.AddModelError("", "Username already exists");
@@ -46,7 +47,7 @@ namespace CCC.TestApp.UI.Web.Controllers
 
         public ActionResult Destroy(Guid userId) {
             try {
-                _destroy.Value.Invoke(new DestroyUserRequestModel {UserId = userId});
+                _destroy.Value.Invoke(new DestroyUserRequestModel {UserId = userId}, this);
                 return _response;
             } catch (UserDoesntExistException e) {
                 throw new HttpException(404, "user not found", e);
@@ -55,7 +56,7 @@ namespace CCC.TestApp.UI.Web.Controllers
 
         public ActionResult Show(Guid userId) {
             try {
-                _show.Value.Invoke(new ShowUserRequestModel {UserId = userId});
+                _show.Value.Invoke(new ShowUserRequestModel {UserId = userId}, this);
                 return _response;
             } catch (UserDoesntExistException e) {
                 throw new HttpException(404, "user not found", e);
@@ -66,7 +67,7 @@ namespace CCC.TestApp.UI.Web.Controllers
             if (!ModelState.IsValid)
                 return View(model);
             try {
-                _update.Value.Invoke(new UpdateUserRequestModel {UserId = userId, UserName = model.UserName});
+                _update.Value.Invoke(new UpdateUserRequestModel {UserId = userId, UserName = model.UserName}, this);
                 return _response;
             } catch (UserDoesntExistException e) {
                 throw new HttpException(404, "user not found", e);
@@ -83,7 +84,7 @@ namespace CCC.TestApp.UI.Web.Controllers
                         OldPassword = model.OldPassword,
                         Password = model.NewPassword,
                         PasswordConfirmation = model.PasswordConfirmation
-                    });
+                    }, this);
                 return _response;
             } catch (OldPasswordMismatchException) {
                 // We only catch OldPasswordMismatchException because other exceptions at this point should mean real error

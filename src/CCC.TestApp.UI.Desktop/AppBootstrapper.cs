@@ -93,7 +93,8 @@ namespace CCC.TestApp.UI.Desktop
 
         void SetupViewNamespaces() {
             ViewLocator.AddNamespaceMapping("CCCTestApp.UI.Desktop.ViewModels", "CCCTestApp.UI.Desktop.Views");
-            ViewLocator.AddNamespaceMapping("CCCTestApp.UI.Desktop.ViewModels.Users", "CCCTestApp.UI.Desktop.Views.Users");
+            ViewLocator.AddNamespaceMapping("CCCTestApp.UI.Desktop.ViewModels.Users",
+                "CCCTestApp.UI.Desktop.Views.Users");
         }
     }
 }

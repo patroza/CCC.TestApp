@@ -11,13 +11,13 @@ namespace CCC.TestApp.UI.Desktop.ViewModels.Users
 {
     public class UsersViewModel : ScreenBase, IResponseBoundary<ListUsersResponseModel>
     {
-        readonly Lazy<IRequestBoundary<ListUsersRequestModel>> _listUsers;
+        readonly Lazy<IListUsersRequestBoundary> _listUsers;
         readonly Lazy<NewUserViewModel> _newUserViewModel;
         readonly Lazy<ShowUserViewModel> _userViewModel;
         UserModel _selectedUser;
         ObservableCollection<UserModel> _users;
 
-        public UsersViewModel(Lazy<IRequestBoundary<ListUsersRequestModel>> listUsers,
+        public UsersViewModel(Lazy<IListUsersRequestBoundary> listUsers,
             Lazy<ShowUserViewModel> userViewModel,
             Lazy<NewUserViewModel> newUserViewModel) {
             _listUsers = listUsers;
@@ -71,7 +71,7 @@ namespace CCC.TestApp.UI.Desktop.ViewModels.Users
         }
 
         void LoadList() {
-            _listUsers.Value.Invoke(new ListUsersRequestModel());
+            _listUsers.Value.Invoke(new ListUsersRequestModel(), this);
         }
     }
 }

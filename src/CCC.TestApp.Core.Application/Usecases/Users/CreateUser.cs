@@ -4,16 +4,11 @@ using CCC.TestApp.Core.Domain.Entities;
 
 namespace CCC.TestApp.Core.Application.Usecases.Users
 {
-    public class CreateUserInteractor : UserInteractor, IRequestBoundary<CreateUserRequestModel>
+    public class CreateUserInteractor : UserInteractor, ICreateUserRequestBoundary
     {
-        readonly IResponseBoundary<CreateUserResponseModel> _responder;
+        public CreateUserInteractor(IUserRepository userRepository) : base(userRepository) {}
 
-        public CreateUserInteractor(IUserRepository userRepository, IResponseBoundary<CreateUserResponseModel> responder)
-            : base(userRepository) {
-            _responder = responder;
-        }
-
-        public void Invoke(CreateUserRequestModel inputModel) {
+        public void Invoke(CreateUserRequestModel inputModel, IResponseBoundary<CreateUserResponseModel> responder) {
             // TODO: AutoMapper?
             var newUser = new User(Guid.NewGuid()) {
                 UserName = inputModel.UserName,
@@ -24,19 +19,22 @@ namespace CCC.TestApp.Core.Application.Usecases.Users
             } catch (RecordAlreadyExistsException) {
                 throw new UserAlreadyExistsException();
             }
-            _responder.Respond(new CreateUserResponseModel {Id = newUser.Id});
+            responder.Respond(new CreateUserResponseModel {Id = newUser.Id});
         }
     }
 
+    public interface ICreateUserRequestBoundary :
+        IRequestBoundary<CreateUserRequestModel, IResponseBoundary<CreateUserResponseModel>> {}
+
     public class UserAlreadyExistsException : RecordAlreadyExistsException {}
 
-    public struct CreateUserRequestModel
+    public struct CreateUserRequestModel : IRequestModel
     {
         public string UserName { get; set; }
         public string Password { get; set; }
     }
 
-    public struct CreateUserResponseModel
+    public struct CreateUserResponseModel : IResponseModel
     {
         public Guid Id { get; set; }
     }

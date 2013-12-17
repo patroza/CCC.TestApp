@@ -3,30 +3,28 @@ using CCC.TestApp.Core.Application.DALInterfaces;
 
 namespace CCC.TestApp.Core.Application.Usecases.Users
 {
-    public class UpdateUserInteractor : UserInteractor, IRequestBoundary<UpdateUserRequestModel>
+    public class UpdateUserInteractor : UserInteractor, IUpdateUserRequestBoundary
     {
-        readonly IResponseBoundary<UpdateUserResponseModel> _responder;
+        public UpdateUserInteractor(IUserRepository userRepository) : base(userRepository) {}
 
-        public UpdateUserInteractor(IUserRepository userRepository, IResponseBoundary<UpdateUserResponseModel> responder)
-            : base(userRepository) {
-            _responder = responder;
-        }
-
-        public void Invoke(UpdateUserRequestModel inputModel) {
+        public void Invoke(UpdateUserRequestModel inputModel, IResponseBoundary<UpdateUserResponseModel> responder) {
             var user = GetExistingUser(inputModel.UserId);
             user.UserName = inputModel.UserName;
             user.Password = inputModel.Password;
             UserRepository.Update(user);
-            _responder.Respond(new UpdateUserResponseModel());
+            responder.Respond(new UpdateUserResponseModel());
         }
     }
 
-    public struct UpdateUserRequestModel
+    public interface IUpdateUserRequestBoundary :
+        IRequestBoundary<UpdateUserRequestModel, IResponseBoundary<UpdateUserResponseModel>> {}
+
+    public struct UpdateUserRequestModel : IRequestModel
     {
         public Guid UserId { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
     }
 
-    public struct UpdateUserResponseModel {}
+    public struct UpdateUserResponseModel : IResponseModel {}
 }

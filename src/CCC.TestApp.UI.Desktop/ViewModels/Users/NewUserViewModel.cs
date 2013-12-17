@@ -6,11 +6,11 @@ namespace CCC.TestApp.UI.Desktop.ViewModels.Users
 {
     public class NewUserViewModel : ScreenBase, IResponseBoundary<CreateUserResponseModel>
     {
-        readonly Lazy<IRequestBoundary<CreateUserRequestModel>> _createUser;
+        readonly ICreateUserRequestBoundary _createUser;
         string _password;
         string _userName;
 
-        public NewUserViewModel(Lazy<IRequestBoundary<CreateUserRequestModel>> createUser) {
+        public NewUserViewModel(ICreateUserRequestBoundary createUser) {
             _createUser = createUser;
             base.DisplayName = "New User";
         }
@@ -36,7 +36,7 @@ namespace CCC.TestApp.UI.Desktop.ViewModels.Users
         }
 
         public void OK() {
-            _createUser.Value.Invoke(new CreateUserRequestModel {UserName = UserName, Password = Password});
+            _createUser.Invoke(new CreateUserRequestModel {UserName = UserName, Password = Password}, this);
         }
 
         public void Cancel() {

@@ -7,12 +7,12 @@ namespace CCC.TestApp.UI.Desktop.ViewModels.Users
 {
     public class EditUserViewModel : ScreenBase, IResponseBoundary<UpdateUserResponseModel>
     {
-        readonly Lazy<IRequestBoundary<UpdateUserRequestModel>> _updateUser;
+        readonly IUpdateUserRequestBoundary _updateUser;
         string _password;
         UserModel _user;
         string _userName;
 
-        public EditUserViewModel(Lazy<IRequestBoundary<UpdateUserRequestModel>> updateUser) {
+        public EditUserViewModel(IUpdateUserRequestBoundary updateUser) {
             _updateUser = updateUser;
         }
 
@@ -43,11 +43,11 @@ namespace CCC.TestApp.UI.Desktop.ViewModels.Users
         }
 
         public void OK() {
-            _updateUser.Value.Invoke(new UpdateUserRequestModel {
+            _updateUser.Invoke(new UpdateUserRequestModel {
                 UserId = _user.Id,
                 UserName = UserName,
                 Password = Password
-            });
+            }, this);
         }
 
         public void Cancel() {

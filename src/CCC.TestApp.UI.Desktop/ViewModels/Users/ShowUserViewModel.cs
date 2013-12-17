@@ -10,17 +10,22 @@ namespace CCC.TestApp.UI.Desktop.ViewModels.Users
     public class ShowUserViewModel : ScreenBase, IResponseBoundary<ShowUserResponseModel>,
         IResponseBoundary<DestroyUserResponseModel>
     {
-        readonly Lazy<IRequestBoundary<DestroyUserRequestModel>> _destroyUser;
-        readonly Lazy<EditUserViewModel> _editUser;
-        readonly Lazy<IRequestBoundary<ShowUserRequestModel>> _showUser;
+        readonly IDestroyUserRequestBoundary _destroyUser;
+        readonly EditUserViewModel _editUser;
+        readonly IShowUserRequestBoundary _showUser;
         UserModel _user;
 
-        public ShowUserViewModel(Lazy<IRequestBoundary<ShowUserRequestModel>> showUser,
-            Lazy<IRequestBoundary<DestroyUserRequestModel>> destroyUser, Lazy<EditUserViewModel> editUser) {
+        public ShowUserViewModel(IShowUserRequestBoundary showUser,
+            IDestroyUserRequestBoundary destroyUser, EditUserViewModel editUser) {
             _showUser = showUser;
             _destroyUser = destroyUser;
             _editUser = editUser;
             base.DisplayName = "Show User";
+        }
+
+        protected override void OnInitialize() {
+            base.OnInitialize();
+            _editUser.Deactivated += ValueOnDeactivated;
         }
 
         public UserModel User {
@@ -37,14 +42,12 @@ namespace CCC.TestApp.UI.Desktop.ViewModels.Users
         }
 
         public void Destroy() {
-            _destroyUser.Value.Invoke(new DestroyUserRequestModel {UserId = _user.Id});
+            _destroyUser.Invoke(new DestroyUserRequestModel {UserId = _user.Id}, this);
         }
 
         public void Edit() {
-            if (!_editUser.IsValueCreated)
-                _editUser.Value.Deactivated += ValueOnDeactivated;
-            _editUser.Value.LoadUser(_user);
-            GetParentScreen().ActivateItem(_editUser.Value);
+            _editUser.LoadUser(_user);
+            GetParentScreen().ActivateItem(_editUser);
         }
 
         void ValueOnDeactivated(object sender, DeactivationEventArgs deactivationEventArgs) {
@@ -52,7 +55,7 @@ namespace CCC.TestApp.UI.Desktop.ViewModels.Users
         }
 
         public void LoadUser(Guid userId) {
-            _showUser.Value.Invoke(new ShowUserRequestModel(userId));
+            _showUser.Invoke(new ShowUserRequestModel(userId), this);
         }
     }
 }
