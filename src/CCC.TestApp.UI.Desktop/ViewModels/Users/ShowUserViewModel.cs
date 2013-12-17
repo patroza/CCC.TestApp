@@ -12,16 +12,17 @@ namespace CCC.TestApp.UI.Desktop.ViewModels.Users
         IResponseBoundary<DestroyUserResponseModel>
     {
         readonly IDestroyUserRequestBoundary _destroyUser;
-        readonly ExportFactory<EditUserViewModel> _editUser;
+        readonly Func<UserModel, ExportLifetimeContext<EditUserViewModel>> _editUserFactory;
         readonly IShowUserRequestBoundary _showUser;
         ExportLifetimeContext<EditUserViewModel> _editUserContext;
         UserModel _user;
 
         public ShowUserViewModel(IShowUserRequestBoundary showUser,
-            IDestroyUserRequestBoundary destroyUser, ExportFactory<EditUserViewModel> editUser) {
+            IDestroyUserRequestBoundary destroyUser,
+            Func<UserModel, ExportLifetimeContext<EditUserViewModel>> editUserFactory) {
             _showUser = showUser;
             _destroyUser = destroyUser;
-            _editUser = editUser;
+            _editUserFactory = editUserFactory;
             base.DisplayName = "Show User";
         }
 
@@ -43,9 +44,8 @@ namespace CCC.TestApp.UI.Desktop.ViewModels.Users
         }
 
         public void Edit() {
-            _editUserContext = _editUser.CreateExport();
+            _editUserContext = _editUserFactory(_user);
             _editUserContext.Value.Deactivated += EditUserDeactivated;
-            _editUserContext.Value.LoadUser(_user);
             GetParentScreen().ActivateItem(_editUserContext.Value);
         }
 

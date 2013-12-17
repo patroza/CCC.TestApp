@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Linq;
 using AutoMapper;
@@ -13,14 +14,14 @@ namespace CCC.TestApp.UI.Desktop.ViewModels.Users
     {
         readonly IListUsersRequestBoundary _listUsers;
         readonly ExportFactory<NewUserViewModel> _newUserViewModelFactory;
-        readonly ExportFactory<ShowUserViewModel> _userViewModelFactory;
+        readonly Func<Guid, ExportLifetimeContext<ShowUserViewModel>> _userViewModelFactory;
         ExportLifetimeContext<NewUserViewModel> _newUserContext;
         UserModel _selectedUser;
         ExportLifetimeContext<ShowUserViewModel> _showUserContext;
         ObservableCollection<UserModel> _users;
 
         public UsersViewModel(IListUsersRequestBoundary listUsers,
-            ExportFactory<ShowUserViewModel> userViewModelFactory,
+            Func<Guid, ExportLifetimeContext<ShowUserViewModel>> userViewModelFactory,
             ExportFactory<NewUserViewModel> newUserViewModelFactory) {
             _listUsers = listUsers;
             _userViewModelFactory = userViewModelFactory;
@@ -70,9 +71,8 @@ namespace CCC.TestApp.UI.Desktop.ViewModels.Users
         }
 
         public void ShowUser(UserModel user) {
-            _showUserContext = _userViewModelFactory.CreateExport();
+            _showUserContext = _userViewModelFactory(user.Id);
             _showUserContext.Value.Deactivated += ShowUserDeactivated;
-            _showUserContext.Value.LoadUser(user.Id);
             GetParentScreen().ActivateItem(_showUserContext.Value);
         }
 

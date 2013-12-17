@@ -61,12 +61,12 @@ namespace CCC.TestApp.UI.Desktop
             _container = container;
         }
 
-        void SetupBatch(CompositionBatch batch, CompositionContainer container) {
+        static void SetupBatch(CompositionBatch batch, CompositionContainer container) {
             batch.AddExportedValue<IWindowManager>(new WindowManager());
             container.Compose(batch);
         }
 
-        void SetupRegistrationBuilder(RegistrationBuilder rb) {
+        static void SetupRegistrationBuilder(RegistrationBuilder rb) {
             SetupUI(rb);
             SetupDAL(rb);
             SetupCore(rb);
@@ -79,6 +79,9 @@ namespace CCC.TestApp.UI.Desktop
             rb.ForTypesMatching(x => x.Name.EndsWith("ViewModel"))
                 .Export()
                 .ExportInterfaces();
+
+            rb.ForTypesMatching(x => x.Name.EndsWith("ViewModelsFactory"))
+                .ExportProperties(x => true);
         }
 
         static void SetupCore(RegistrationBuilder rb) {
@@ -91,7 +94,7 @@ namespace CCC.TestApp.UI.Desktop
                 .ExportInterfaces();
         }
 
-        void SetupViewNamespaces() {
+        static void SetupViewNamespaces() {
             ViewLocator.AddNamespaceMapping("CCCTestApp.UI.Desktop.ViewModels", "CCCTestApp.UI.Desktop.Views");
             ViewLocator.AddNamespaceMapping("CCCTestApp.UI.Desktop.ViewModels.Users",
                 "CCCTestApp.UI.Desktop.Views.Users");

@@ -26,18 +26,13 @@ namespace CCC.TestApp.UI.Desktop.ViewModels.Users
             set { SetProperty(ref _password, value); }
         }
 
-        public UserModel User {
-            get { return _user; }
-            set { SetProperty(ref _user, value); }
-        }
-
         public void Respond(UpdateUserResponseModel model) {
             Clear();
             TryClose();
         }
 
         public void LoadUser(UserModel user) {
-            User = user;
+            _user = user;
             UserName = user.UserName;
             Password = user.Password;
         }
