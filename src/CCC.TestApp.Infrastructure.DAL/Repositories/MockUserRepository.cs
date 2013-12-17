@@ -42,8 +42,8 @@ namespace CCC.TestApp.Infrastructure.DAL.Repositories
             lock (_userList) {
                 ValidateDoesntExistYet(user.UserName);
                 var userRow = CreateUserRow(user);
-                ValidateDoesntExistYet(userRow.Id);
                 AddToStorage(userRow);
+                user.Id = userRow.Id;
             }
         }
 
@@ -69,13 +69,13 @@ namespace CCC.TestApp.Infrastructure.DAL.Repositories
         }
 
         void AddToStorage(UserRow userRow) {
+            userRow.Id = Guid.NewGuid();
+            ValidateDoesntExistYet(userRow.Id);
             _userList.Add(userRow.Id, userRow);
         }
 
         static UserRow CreateUserRow(User user) {
-            var userRow = Mapper.DynamicMap<UserRow>(user);
-            userRow.Id = Guid.NewGuid();
-            return userRow;
+            return Mapper.DynamicMap<UserRow>(user);
         }
 
         void ValidateDoesntExistYet(string userName) {
