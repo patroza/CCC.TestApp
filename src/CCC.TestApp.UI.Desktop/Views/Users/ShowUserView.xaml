@@ -16,7 +16,7 @@
             <TextBlock Text="{Binding User.UserName}" DockPanel.Dock="Top" />
             <TextBlock Text="{Binding User.Id}" DockPanel.Dock="Top" />
         </DockPanel>
-        
+
         <StackPanel Orientation="Horizontal" Grid.Row="1">
             <Button Content="Edit" x:Name="Edit" />
             <Button Content="Destroy" x:Name="Destroy" />

@@ -13,7 +13,7 @@ namespace CCC.TestApp.Core.Application.Usecases.Users
         }
 
         void UpdateUser(UpdateUserRequestModel inputModel) {
-            var user = GetExistingUser(inputModel.UserId);
+            var user = GetExistingUser(inputModel.Id);
             user.UserName = inputModel.UserName;
             user.Password = inputModel.Password;
             UserRepository.Update(user);
@@ -29,7 +29,7 @@ namespace CCC.TestApp.Core.Application.Usecases.Users
 
     public struct UpdateUserRequestModel : IRequestModel
     {
-        public Guid UserId { get; set; }
+        public Guid Id { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
     }

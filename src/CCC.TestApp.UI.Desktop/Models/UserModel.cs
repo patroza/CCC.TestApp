@@ -7,11 +7,7 @@ namespace CCC.TestApp.UI.Desktop.Models
         string _password;
         string _userName;
 
-        public UserModel(Guid id) {
-            Id = id;
-        }
-
-        public Guid Id { get; private set; }
+        public Guid Id { get; set; }
 
         public string UserName {
             get { return _userName; }

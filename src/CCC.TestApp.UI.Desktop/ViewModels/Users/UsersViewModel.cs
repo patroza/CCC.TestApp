@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Linq;
 using AutoMapper;
-using Caliburn.Micro;
 using CCC.TestApp.Core.Application.Usecases;
 using CCC.TestApp.Core.Application.Usecases.Users;
 using CCC.TestApp.UI.Desktop.Models;
@@ -44,24 +43,18 @@ namespace CCC.TestApp.UI.Desktop.ViewModels.Users
             Users = new ObservableCollection<UserModel>(model.Users.Select(Mapper.DynamicMap<UserModel>));
         }
 
+        protected override void OnActivate() {
+            base.OnActivate();
+            if (_showUserContext != null)
+                _showUserContext.Dispose();
+            if (_newUserContext != null)
+                _newUserContext.Dispose();
+            LoadList();
+        }
+
         public void NewUser() {
             _newUserContext = _newUserViewModelFactory.CreateExport();
-            _newUserContext.Value.Deactivated += NewUserDeactivated;
             GetParentScreen().ActivateItem(_newUserContext.Value);
-        }
-
-        void NewUserDeactivated(object sender, DeactivationEventArgs deactivationEventArgs) {
-            _newUserContext.Value.Deactivated -= NewUserDeactivated;
-            _newUserContext.Dispose();
-            _newUserContext = null;
-            LoadList();
-        }
-
-        void ShowUserDeactivated(object sender, DeactivationEventArgs deactivationEventArgs) {
-            _showUserContext.Value.Deactivated -= ShowUserDeactivated;
-            _showUserContext.Dispose();
-            _showUserContext = null;
-            LoadList();
         }
 
         public void ShowSelectedUser() {
@@ -72,12 +65,7 @@ namespace CCC.TestApp.UI.Desktop.ViewModels.Users
 
         public void ShowUser(UserModel user) {
             _showUserContext = _userViewModelFactory(user.Id);
-            _showUserContext.Value.Deactivated += ShowUserDeactivated;
             GetParentScreen().ActivateItem(_showUserContext.Value);
-        }
-
-        protected override void OnInitialize() {
-            LoadList();
         }
 
         void LoadList() {

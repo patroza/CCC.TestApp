@@ -67,7 +67,7 @@ namespace CCC.TestApp.UI.Web.Controllers
             if (!ModelState.IsValid)
                 return View(model);
             try {
-                _update.Value.Invoke(new UpdateUserRequestModel {UserId = userId, UserName = model.UserName}, this);
+                _update.Value.Invoke(new UpdateUserRequestModel {Id = userId, UserName = model.UserName}, this);
                 return _response;
             } catch (UserDoesntExistException e) {
                 throw new HttpException(404, "user not found", e);

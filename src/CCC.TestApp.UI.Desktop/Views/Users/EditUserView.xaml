@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             mc:Ignorable="d"
+             xmlns:users="clr-namespace:CCC.TestApp.UI.Desktop.ViewModels.Users"
+             mc:Ignorable="d" d:DataContext="{d:DesignInstance users:EditUserViewModel}"
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
         <Grid.RowDefinitions>
@@ -14,9 +15,9 @@
         <Grid>
             <UniformGrid Columns="2" Rows="2" VerticalAlignment="Top">
                 <Label Content="UserName" />
-                <TextBox x:Name="UserName" />
+                <TextBox Text="{Binding User.UserName}" />
                 <Label Content="Password" />
-                <TextBox x:Name="Password" />
+                <TextBox Text="{Binding User.Password}" />
             </UniformGrid>
         </Grid>
 

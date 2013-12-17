@@ -30,7 +30,7 @@ namespace CCC.TestApp.UI.Desktop.ViewModels.Users
 
         ExportLifetimeContext<ShowUserViewModel> _showUser(Guid userId) {
             var showUser = _showUserFactory.CreateExport();
-            showUser.Value.LoadUser(userId);
+            showUser.Value.SetUserId(userId);
             return showUser;
         }
     }

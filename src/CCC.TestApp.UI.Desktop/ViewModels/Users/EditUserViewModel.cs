@@ -1,6 +1,8 @@
 ﻿using System;
+using AutoMapper;
 using CCC.TestApp.Core.Application.Usecases;
 using CCC.TestApp.Core.Application.Usecases.Users;
+using CCC.TestApp.UI.Desktop.Models;
 
 namespace CCC.TestApp.UI.Desktop.ViewModels.Users
 {
@@ -9,9 +11,8 @@ namespace CCC.TestApp.UI.Desktop.ViewModels.Users
     {
         readonly IShowUserRequestBoundary _showUser;
         readonly IUpdateUserRequestBoundary _updateUser;
-        string _password;
-        Guid _userId;
-        string _userName;
+
+        UserModel _user;
 
         public EditUserViewModel(IShowUserRequestBoundary showUser, IUpdateUserRequestBoundary updateUser) {
             _updateUser = updateUser;
@@ -19,47 +20,29 @@ namespace CCC.TestApp.UI.Desktop.ViewModels.Users
             base.DisplayName = "Edit User";
         }
 
-        public string UserName {
-            get { return _userName; }
-            set { SetProperty(ref _userName, value); }
-        }
-
-        public string Password {
-            get { return _password; }
-            set { SetProperty(ref _password, value); }
+        public UserModel User {
+            get { return _user; }
+            set { SetProperty(ref _user, value); }
         }
 
         public void Respond(ShowUserResponseModel model) {
-            UserName = model.UserName;
-            Password = model.Password;
+            User = Mapper.DynamicMap<UserModel>(model);
         }
 
         public void Respond(UpdateUserResponseModel model) {
-            Clear();
             TryClose();
         }
 
         public void LoadUser(Guid userId) {
-            _userId = userId;
             _showUser.Invoke(new ShowUserRequestModel(userId), this);
         }
 
         public void OK() {
-            _updateUser.Invoke(new UpdateUserRequestModel {
-                UserId = _userId,
-                UserName = UserName,
-                Password = Password
-            }, this);
+            _updateUser.Invoke(Mapper.DynamicMap<UpdateUserRequestModel>(User), this);
         }
 
         public void Cancel() {
-            Clear();
             TryClose();
-        }
-
-        void Clear() {
-            UserName = null;
-            Password = null;
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 using AutoMapper;
-using Caliburn.Micro;
 using CCC.TestApp.Core.Application.Usecases;
 using CCC.TestApp.Core.Application.Usecases.Users;
 using CCC.TestApp.UI.Desktop.Models;
@@ -16,6 +15,7 @@ namespace CCC.TestApp.UI.Desktop.ViewModels.Users
         readonly IShowUserRequestBoundary _showUser;
         ExportLifetimeContext<EditUserViewModel> _editUserContext;
         UserModel _user;
+        Guid _userId;
 
         public ShowUserViewModel(IShowUserRequestBoundary showUser,
             IDestroyUserRequestBoundary destroyUser,
@@ -40,23 +40,20 @@ namespace CCC.TestApp.UI.Desktop.ViewModels.Users
         }
 
         public void Destroy() {
-            _destroyUser.Invoke(new DestroyUserRequestModel {UserId = _user.Id}, this);
+            _destroyUser.Invoke(new DestroyUserRequestModel {UserId = _userId}, this);
         }
 
         public void Edit() {
-            _editUserContext = _editUserFactory(_user.Id);
-            _editUserContext.Value.Deactivated += EditUserDeactivated;
+            _editUserContext = _editUserFactory(_userId);
             GetParentScreen().ActivateItem(_editUserContext.Value);
         }
 
-        void EditUserDeactivated(object sender, DeactivationEventArgs deactivationEventArgs) {
-            _editUserContext.Value.Deactivated -= EditUserDeactivated;
-            _editUserContext.Dispose();
-            LoadUser(_user.Id);
+        protected override void OnActivate() {
+            _showUser.Invoke(new ShowUserRequestModel(_userId), this);
         }
 
-        public void LoadUser(Guid userId) {
-            _showUser.Invoke(new ShowUserRequestModel(userId), this);
+        public void SetUserId(Guid userId) {
+            _userId = userId;
         }
     }
 }

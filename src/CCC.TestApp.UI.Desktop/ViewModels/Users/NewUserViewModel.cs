@@ -1,45 +1,31 @@
-﻿using CCC.TestApp.Core.Application.Usecases;
+﻿using AutoMapper;
+using CCC.TestApp.Core.Application.Usecases;
 using CCC.TestApp.Core.Application.Usecases.Users;
+using CCC.TestApp.UI.Desktop.Models;
 
 namespace CCC.TestApp.UI.Desktop.ViewModels.Users
 {
     public class NewUserViewModel : ScreenBase, IResponseBoundary<CreateUserResponseModel>
     {
         readonly ICreateUserRequestBoundary _createUser;
-        string _password;
-        string _userName;
 
         public NewUserViewModel(ICreateUserRequestBoundary createUser) {
             _createUser = createUser;
+            User = new UserModel();
             base.DisplayName = "New User";
         }
 
-        public string UserName {
-            get { return _userName; }
-            set { SetProperty(ref _userName, value); }
-        }
-
-        public string Password {
-            get { return _password; }
-            set { SetProperty(ref _password, value); }
-        }
+        public UserModel User { get; private set; }
 
         public void Respond(CreateUserResponseModel model) {
-            Clean();
             TryClose();
         }
 
-        void Clean() {
-            UserName = null;
-            Password = null;
-        }
-
         public void OK() {
-            _createUser.Invoke(new CreateUserRequestModel {UserName = UserName, Password = Password}, this);
+            _createUser.Invoke(Mapper.DynamicMap<CreateUserRequestModel>(User), this);
         }
 
         public void Cancel() {
-            Clean();
             TryClose();
         }
     }
