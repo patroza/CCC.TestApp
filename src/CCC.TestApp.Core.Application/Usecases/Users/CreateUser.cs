@@ -15,8 +15,7 @@ namespace CCC.TestApp.Core.Application.Usecases.Users
         }
 
         static User CreateUser(CreateUserRequestModel inputModel) {
-            // TODO: AutoMapper?
-            return new User(Guid.NewGuid()) {
+            return new User {
                 UserName = inputModel.UserName,
                 Password = inputModel.Password
             };
