@@ -14,6 +14,8 @@ namespace CCC.TestApp.UI.Desktop.ViewModels.Users
 
         public EditUserViewModel(IUpdateUserRequestBoundary updateUser) {
             _updateUser = updateUser;
+
+            base.DisplayName = "Edit User";
         }
 
         public string UserName {

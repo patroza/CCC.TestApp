@@ -20,9 +20,9 @@
             </UniformGrid>
         </Grid>
 
-        <DockPanel VerticalAlignment="Bottom" Grid.Row="1">
+        <StackPanel Orientation="Horizontal" Grid.Row="1">
             <Button Content="OK" x:Name="OK" />
             <Button Content="Cancel" x:Name="Cancel" />
-        </DockPanel>
+        </StackPanel>
     </Grid>
 </UserControl>

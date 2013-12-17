@@ -17,7 +17,7 @@
         </Grid.RowDefinitions>
 
         <Grid>
-            <Button Content="New" x:Name="NewUser" />
+            <Button Content="New" x:Name="NewUser" HorizontalAlignment="Left" />
         </Grid>
 
         <ListBox Grid.Row="1" x:Name="Users"
