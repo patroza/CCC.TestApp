@@ -1,44 +1,25 @@
-﻿using System;
-using AutoMapper;
-using CCC.TestApp.Core.Application.Usecases;
-using CCC.TestApp.Core.Application.Usecases.Users;
-using CCC.TestApp.UI.Desktop.Models;
+﻿using CCC.TestApp.UI.Desktop.Models;
 
 namespace CCC.TestApp.UI.Desktop.ViewModels.Users
 {
-    public class EditUserViewModel : ScreenBase, IResponseBoundary<UpdateUserResponseModel>,
-        IResponseBoundary<ShowUserResponseModel>
+    public class EditUserViewModel : ScreenBase
     {
-        readonly IShowUserRequestBoundary _showUser;
-        readonly IUpdateUserRequestBoundary _updateUser;
+        readonly UsersController _controller;
+        readonly UserModel _user;
 
-        UserModel _user;
-
-        public EditUserViewModel(IShowUserRequestBoundary showUser, IUpdateUserRequestBoundary updateUser) {
-            _updateUser = updateUser;
-            _showUser = showUser;
+        public EditUserViewModel(UserModel user, UsersController controller) {
+            _user = user;
+            _controller = controller;
             base.DisplayName = "Edit User";
         }
 
         public UserModel User {
             get { return _user; }
-            set { SetProperty(ref _user, value); }
-        }
-
-        public void Respond(ShowUserResponseModel model) {
-            User = Mapper.DynamicMap<UserModel>(model);
-        }
-
-        public void Respond(UpdateUserResponseModel model) {
-            TryClose();
-        }
-
-        public void LoadUser(Guid userId) {
-            _showUser.Invoke(new ShowUserRequestModel(userId), this);
         }
 
         public void OK() {
-            _updateUser.Invoke(Mapper.DynamicMap<UpdateUserRequestModel>(User), this);
+            _controller.UpdateUser(_user);
+            TryClose();
         }
 
         public void Cancel() {

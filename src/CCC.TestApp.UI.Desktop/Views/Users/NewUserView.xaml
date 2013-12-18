@@ -15,9 +15,9 @@
         <Grid>
             <UniformGrid Columns="2" Rows="2" VerticalAlignment="Top">
                 <Label Content="UserName" />
-                <TextBox x:Name="UserName" />
+                <TextBox Text="{Binding User.UserName}" />
                 <Label Content="Password" />
-                <TextBox x:Name="Password" />
+                <TextBox Text="{Binding User.Password}" />
             </UniformGrid>
         </Grid>
 

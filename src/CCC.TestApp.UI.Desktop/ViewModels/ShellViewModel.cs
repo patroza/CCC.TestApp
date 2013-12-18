@@ -1,20 +1,21 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using Caliburn.Micro;
 using CCC.TestApp.UI.Desktop.ViewModels.Users;
 
 namespace CCC.TestApp.UI.Desktop.ViewModels
 {
     public class ShellViewModel : Conductor<IScreen>.Collection.OneActive
     {
-        readonly UsersViewModel _users;
+        readonly Lazy<UsersController> _usersController;
 
-        public ShellViewModel(UsersViewModel users) {
-            _users = users;
+        public ShellViewModel(Lazy<UsersController> usersController) {
+            _usersController = usersController;
             base.DisplayName = "CCC TestApp";
         }
 
         protected override void OnInitialize() {
             base.OnInitialize();
-            base.ActivateItem(_users);
+            _usersController.Value.ListUsers();
         }
 
         public void Back() {

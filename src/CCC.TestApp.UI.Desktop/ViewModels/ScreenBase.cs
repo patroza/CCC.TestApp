@@ -8,11 +8,15 @@ namespace CCC.TestApp.UI.Desktop.ViewModels
     public abstract class ScreenBase : Screen
     {
         protected bool SetProperty<T>(ref T storage, T value, [CallerMemberName] String propertyName = null) {
-            if (EqualityComparer<T>.Default.Equals(storage, value))
+            if (CompareValues(storage, value))
                 return false;
             storage = value;
             NotifyOfPropertyChange(propertyName);
             return true;
+        }
+
+        protected static bool CompareValues<T>(T value, T newValue) {
+            return EqualityComparer<T>.Default.Equals(value, newValue);
         }
 
         protected IConductor GetParentScreen() {

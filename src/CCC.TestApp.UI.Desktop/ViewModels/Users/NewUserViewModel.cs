@@ -1,16 +1,14 @@
-﻿using AutoMapper;
-using CCC.TestApp.Core.Application.Usecases;
-using CCC.TestApp.Core.Application.Usecases.Users;
+﻿using CCC.TestApp.Core.Application.Usecases.Users;
 using CCC.TestApp.UI.Desktop.Models;
 
 namespace CCC.TestApp.UI.Desktop.ViewModels.Users
 {
-    public class NewUserViewModel : ScreenBase, IResponseBoundary<CreateUserResponseModel>
+    public class NewUserViewModel : ScreenBase
     {
-        readonly ICreateUserRequestBoundary _createUser;
+        readonly UsersController _controller;
 
-        public NewUserViewModel(ICreateUserRequestBoundary createUser) {
-            _createUser = createUser;
+        public NewUserViewModel(UsersController controller) {
+            _controller = controller;
             User = new UserModel();
             base.DisplayName = "New User";
         }
@@ -22,7 +20,8 @@ namespace CCC.TestApp.UI.Desktop.ViewModels.Users
         }
 
         public void OK() {
-            _createUser.Invoke(Mapper.DynamicMap<CreateUserRequestModel>(User), this);
+            _controller.CreateUser(User);
+            TryClose();
         }
 
         public void Cancel() {

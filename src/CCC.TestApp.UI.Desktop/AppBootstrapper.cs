@@ -76,6 +76,10 @@ namespace CCC.TestApp.UI.Desktop
             rb.ForTypesMatching(x => x.Name.EndsWith("View"))
                 .Export();
 
+            rb.ForTypesMatching(x => x.Name.EndsWith("Controller"))
+                .Export()
+                .ExportInterfaces();
+
             rb.ForTypesMatching(x => x.Name.EndsWith("ViewModel"))
                 .Export()
                 .ExportInterfaces();
