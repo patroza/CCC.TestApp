@@ -42,6 +42,8 @@
     <Compile Include="DALInterfaces\IRepository.cs" />
     <Compile Include="DALInterfaces\IUserRepository.cs" />
     <Compile Include="DALInterfaces\RecordAlreadyExistsException.cs" />
+    <Compile Include="Events\RepoEvent.cs" />
+    <Compile Include="Events\UserEvents.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Usecases\IRequestBoundary.cs" />
     <Compile Include="Usecases\IResponseBoundary.cs" />

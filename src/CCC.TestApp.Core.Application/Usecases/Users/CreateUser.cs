@@ -30,7 +30,7 @@ namespace CCC.TestApp.Core.Application.Usecases.Users
         }
 
         static CreateUserResponseModel CreateResponseModel(User newUser) {
-            return new CreateUserResponseModel { Id = newUser.Id };
+            return new CreateUserResponseModel {Id = newUser.Id};
         }
     }
 

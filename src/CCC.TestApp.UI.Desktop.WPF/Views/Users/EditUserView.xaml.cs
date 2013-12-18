@@ -1,13 +1,13 @@
 ﻿using System.Windows.Controls;
 
-namespace CCC.TestApp.UI.Desktop.Views.Users
+namespace CCC.TestApp.UI.Desktop.WPF.Views.Users
 {
     /// <summary>
     ///     Interaction logic for CreateUserView.xaml
     /// </summary>
-    public partial class NewUserView : UserControl
+    public partial class EditUserView : UserControl
     {
-        public NewUserView() {
+        public EditUserView() {
             InitializeComponent();
         }
     }

@@ -11,7 +11,7 @@ using CCC.TestApp.Core.Domain.Entities;
 using CCC.TestApp.Infrastructure.DAL.Repositories;
 using CCC.TestApp.UI.Desktop.ViewModels;
 
-namespace CCC.TestApp.UI.Desktop
+namespace CCC.TestApp.UI.Desktop.WPF
 {
     public class AppBootstrapper : Bootstrapper<ShellViewModel>
     {
@@ -24,7 +24,8 @@ namespace CCC.TestApp.UI.Desktop
 
         protected override IEnumerable<Assembly> SelectAssemblies() {
             return new[] {
-                Assembly.GetExecutingAssembly(), // UI - Self
+                Assembly.GetExecutingAssembly(), // UI.WPF - Self
+                typeof (ScreenBase).Assembly, // UI
                 typeof (MockUserRepository).Assembly, // DAL
                 typeof (UserInteractor).Assembly, // Core App
                 typeof (User).Assembly // Core Domain
@@ -63,6 +64,7 @@ namespace CCC.TestApp.UI.Desktop
 
         static void SetupBatch(CompositionBatch batch, CompositionContainer container) {
             batch.AddExportedValue<IWindowManager>(new WindowManager());
+            batch.AddExportedValue<IEventAggregator>(new EventAggregator());
             container.Compose(batch);
         }
 
@@ -99,9 +101,9 @@ namespace CCC.TestApp.UI.Desktop
         }
 
         static void SetupViewNamespaces() {
-            ViewLocator.AddNamespaceMapping("CCCTestApp.UI.Desktop.ViewModels", "CCCTestApp.UI.Desktop.Views");
-            ViewLocator.AddNamespaceMapping("CCCTestApp.UI.Desktop.ViewModels.Users",
-                "CCCTestApp.UI.Desktop.Views.Users");
+            ViewLocator.AddNamespaceMapping("CCC.TestApp.UI.Desktop.ViewModels", "CCC.TestApp.UI.Desktop.WPF.Views");
+            ViewLocator.AddNamespaceMapping("CCC.TestApp.UI.Desktop.ViewModels.Users",
+                "CCC.TestApp.UI.Desktop.WPF.Views.Users");
         }
     }
 }

@@ -1,12 +1,11 @@
-﻿<UserControl x:Class="CCC.TestApp.UI.Desktop.Views.Users.UsersView"
+﻿<UserControl x:Class="CCC.TestApp.UI.Desktop.WPF.Views.Users.UsersView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:entities="clr-namespace:CCC.TestApp.Core.Domain.Entities;assembly=CCC.TestApp.Core.Domain"
-             xmlns:viewModels="clr-namespace:CCC.TestApp.UI.Desktop.ViewModels"
              xmlns:cal="http://www.caliburnproject.org"
-             xmlns:users="clr-namespace:CCC.TestApp.UI.Desktop.ViewModels.Users"
+             xmlns:users="clr-namespace:CCC.TestApp.UI.Desktop.ViewModels.Users;assembly=CCC.TestApp.UI.Desktop"
+             xmlns:models="clr-namespace:CCC.TestApp.UI.Desktop.Models;assembly=CCC.TestApp.UI.Desktop"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance users:UsersViewModel}" cal:Bind.AtDesignTime="True"
              d:DesignHeight="300" d:DesignWidth="300">
@@ -23,7 +22,7 @@
         <ListBox Grid.Row="1" x:Name="Users"
                  cal:Message.Attach="[Event MouseDoubleClick] = [Action ShowSelectedUser()]">
             <ListBox.ItemTemplate>
-                <DataTemplate DataType="{x:Type entities:User}">
+                <DataTemplate DataType="{x:Type models:UserModel}">
                     <TextBlock Text="{Binding UserName}" />
                 </DataTemplate>
             </ListBox.ItemTemplate>

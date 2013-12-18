@@ -1,15 +1,17 @@
-﻿using CCC.TestApp.Core.Application.Usecases.Users;
+﻿using AutoMapper;
+using CCC.TestApp.Core.Application.Usecases;
+using CCC.TestApp.Core.Application.Usecases.Users;
 using CCC.TestApp.UI.Desktop.Models;
 
 namespace CCC.TestApp.UI.Desktop.ViewModels.Users
 {
-    public class ShowUserViewModel : ScreenBase
+    public class ShowUserViewModel : ScreenBase, IResponseBoundary<ShowUserResponseModel>,
+        IResponseBoundary<DestroyUserResponseModel>
     {
         readonly UsersController _controller;
-        readonly UserModel _user;
+        UserModel _user;
 
-        public ShowUserViewModel(UserModel model, UsersController controller) {
-            _user = model;
+        public ShowUserViewModel(UsersController controller) {
             _controller = controller;
             base.DisplayName = "Show User";
         }
@@ -22,9 +24,12 @@ namespace CCC.TestApp.UI.Desktop.ViewModels.Users
             TryClose();
         }
 
+        public void Respond(ShowUserResponseModel model) {
+            _user = Mapper.DynamicMap<UserModel>(model);
+        }
+
         public void Destroy() {
-            _controller.DestroyUser(_user);
-            TryClose();
+            _controller.DestroyUser(_user, this);
         }
 
         public void Edit() {

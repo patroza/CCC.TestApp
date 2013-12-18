@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace CCC.TestApp.UI.Desktop.Views.Users
+namespace CCC.TestApp.UI.Desktop.WPF.Views.Users
 {
     /// <summary>
     ///     Interaction logic for UserView.xaml

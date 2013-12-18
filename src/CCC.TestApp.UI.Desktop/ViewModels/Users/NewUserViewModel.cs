@@ -1,9 +1,10 @@
-﻿using CCC.TestApp.Core.Application.Usecases.Users;
+﻿using CCC.TestApp.Core.Application.Usecases;
+using CCC.TestApp.Core.Application.Usecases.Users;
 using CCC.TestApp.UI.Desktop.Models;
 
 namespace CCC.TestApp.UI.Desktop.ViewModels.Users
 {
-    public class NewUserViewModel : ScreenBase
+    public class NewUserViewModel : ScreenBase, IResponseBoundary<CreateUserResponseModel>
     {
         readonly UsersController _controller;
 
@@ -17,11 +18,11 @@ namespace CCC.TestApp.UI.Desktop.ViewModels.Users
 
         public void Respond(CreateUserResponseModel model) {
             TryClose();
+            _controller.ShowUser(model.Id);
         }
 
         public void OK() {
-            _controller.CreateUser(User);
-            TryClose();
+            _controller.CreateUser(User, this);
         }
 
         public void Cancel() {

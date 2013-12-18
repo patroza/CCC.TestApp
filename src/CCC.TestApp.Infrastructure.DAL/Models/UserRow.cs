@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace CCC.TestApp.Infrastructure.DAL.Models
 {
     [Table("Users")]
-    public class UserRow
+    class UserRow
     {
         [Column, Required]
         public Guid Id { get; set; }

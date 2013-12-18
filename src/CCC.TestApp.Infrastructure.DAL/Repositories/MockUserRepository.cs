@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using Caliburn.Micro;
 using CCC.TestApp.Core.Application.DALInterfaces;
+using CCC.TestApp.Core.Application.Events;
 using CCC.TestApp.Core.Domain.Entities;
 using CCC.TestApp.Infrastructure.DAL.Models;
 
@@ -10,9 +12,11 @@ namespace CCC.TestApp.Infrastructure.DAL.Repositories
 {
     public class MockUserRepository : IUserRepository
     {
+        readonly IEventAggregator _eventBus;
         readonly Dictionary<Guid, UserRow> _userList = new Dictionary<Guid, UserRow>();
 
-        public MockUserRepository() {
+        public MockUserRepository(IEventAggregator eventBus) {
+            _eventBus = eventBus;
             var guid = Guid.NewGuid();
             _userList.Add(guid, new UserRow {Id = guid, UserName = "Test user 1"});
             guid = Guid.NewGuid();
@@ -28,6 +32,7 @@ namespace CCC.TestApp.Infrastructure.DAL.Repositories
             lock (_userList) {
                 ValidateExists(user.Id);
                 UpdateExisting(user);
+                _eventBus.Publish(new UserRecordUpdated(user.Id));
             }
         }
 
@@ -35,6 +40,7 @@ namespace CCC.TestApp.Infrastructure.DAL.Repositories
             lock (_userList) {
                 ValidateExists(userId);
                 DestroyRecord(userId);
+                _eventBus.Publish(new UserRecordDestroyed(userId));
             }
         }
 
@@ -44,6 +50,7 @@ namespace CCC.TestApp.Infrastructure.DAL.Repositories
                 var userRow = CreateUserRow(user);
                 AddToStorage(userRow);
                 user.Id = userRow.Id;
+                _eventBus.Publish(new UserRecordCreated(userRow.Id));
             }
         }
 
