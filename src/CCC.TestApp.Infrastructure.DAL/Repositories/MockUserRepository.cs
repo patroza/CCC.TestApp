@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Caliburn.Micro;
-using CCC.TestApp.Core.Application;
 using CCC.TestApp.Core.Application.DALInterfaces;
 using CCC.TestApp.Core.Application.Events;
+using CCC.TestApp.Core.Application.Services;
 using CCC.TestApp.Core.Domain.Entities;
 using CCC.TestApp.Infrastructure.DAL.Models;
 
@@ -12,11 +11,11 @@ namespace CCC.TestApp.Infrastructure.DAL.Repositories
 {
     public class MockUserRepository : IUserRepository
     {
-        readonly IEventAggregator _eventBus;
+        readonly IEventBus _eventBus;
         readonly IMapper _mapper;
         readonly Dictionary<Guid, UserRow> _userList = new Dictionary<Guid, UserRow>();
 
-        public MockUserRepository(IEventAggregator eventBus, IMapper mapper) {
+        public MockUserRepository(IEventBus eventBus, IMapper mapper) {
             _eventBus = eventBus;
             _mapper = mapper;
 

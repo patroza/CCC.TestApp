@@ -1,4 +1,4 @@
-﻿namespace CCC.TestApp.Core.Application
+﻿namespace CCC.TestApp.Core.Application.Services
 {
     public interface IMapper
     {

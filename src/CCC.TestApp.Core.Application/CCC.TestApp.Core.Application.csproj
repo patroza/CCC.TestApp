@@ -44,8 +44,9 @@
     <Compile Include="DALInterfaces\RecordAlreadyExistsException.cs" />
     <Compile Include="Events\RepoEvent.cs" />
     <Compile Include="Events\UserEvents.cs" />
-    <Compile Include="IMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\IEventBus.cs" />
+    <Compile Include="Services\IMapper.cs" />
     <Compile Include="Usecases\IRequestBoundary.cs" />
     <Compile Include="Usecases\IResponseBoundary.cs" />
     <Compile Include="DALInterfaces\RecordDoesntExistException.cs" />
@@ -64,9 +65,7 @@
       <Name>CCC.TestApp.Core.Domain</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

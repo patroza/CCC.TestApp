@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using CCC.TestApp.Core.Application;
+using CCC.TestApp.Core.Application.Services;
 
 namespace CCC.TestApp.UI.Desktop.WPF
 {

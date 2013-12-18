@@ -1,6 +1,5 @@
 ﻿using System;
-using Caliburn.Micro;
-using CCC.TestApp.Core.Application;
+using CCC.TestApp.Core.Application.Services;
 using CCC.TestApp.Core.Application.Usecases;
 using CCC.TestApp.Core.Application.Usecases.Users;
 using CCC.TestApp.UI.Desktop.Models;
@@ -13,14 +12,14 @@ namespace CCC.TestApp.UI.Desktop.Controllers
     {
         readonly ICreateUserRequestBoundary _createUser;
         readonly IDestroyUserRequestBoundary _destroyUser;
-        readonly IEventAggregator _eventBus;
+        readonly IEventBus _eventBus;
         readonly IListUsersRequestBoundary _listUsers;
         readonly IMapper _mapper;
         readonly ShellViewModel _shell;
         readonly IShowUserRequestBoundary _showUser;
         readonly IUpdateUserRequestBoundary _updateUser;
 
-        public UsersController(IEventAggregator eventBus, IMapper mapper, ShellViewModel shell,
+        public UsersController(IEventBus eventBus, IMapper mapper, ShellViewModel shell,
             IListUsersRequestBoundary listUsers,
             IShowUserRequestBoundary showUser, IDestroyUserRequestBoundary destroyUser,
             ICreateUserRequestBoundary createUser, IUpdateUserRequestBoundary updateUser) {

@@ -6,7 +6,7 @@ using System.ComponentModel.Composition.Registration;
 using System.Linq;
 using System.Reflection;
 using Caliburn.Micro;
-using CCC.TestApp.Core.Application;
+using CCC.TestApp.Core.Application.Services;
 using CCC.TestApp.Core.Application.Usecases.Users;
 using CCC.TestApp.Core.Domain.Entities;
 using CCC.TestApp.Infrastructure.DAL.Repositories;
@@ -65,7 +65,7 @@ namespace CCC.TestApp.UI.Desktop.WPF
 
         static void SetupBatch(CompositionBatch batch, CompositionContainer container) {
             batch.AddExportedValue<IWindowManager>(new WindowManager());
-            batch.AddExportedValue<IEventAggregator>(new EventAggregator());
+            batch.AddExportedValue<IEventBus>(new EventBus());
             container.Compose(batch);
         }
 
