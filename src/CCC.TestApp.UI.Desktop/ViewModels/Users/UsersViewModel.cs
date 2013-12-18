@@ -47,7 +47,7 @@ namespace CCC.TestApp.UI.Desktop.ViewModels.Users
         }
 
         public void Respond(ListUsersResponseModel model) {
-            Users = new ObservableCollection<UserModel>(model.Users.Select(_mapper.DynamicMap<UserModel>));
+            Users = new ObservableCollection<UserModel>(model.Users.Select(x => _mapper.DynamicMap<UserModel>(x)));
         }
 
         public void Respond(ShowUserResponseModel model) {

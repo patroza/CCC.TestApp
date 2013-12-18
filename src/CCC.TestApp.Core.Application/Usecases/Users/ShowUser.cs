@@ -1,11 +1,16 @@
 using System;
 using CCC.TestApp.Core.Application.DALInterfaces;
+using CCC.TestApp.Core.Application.Services;
 
 namespace CCC.TestApp.Core.Application.Usecases.Users
 {
     public class ShowUserInteractor : UserInteractor, IShowUserRequestBoundary
     {
-        public ShowUserInteractor(IUserRepository userRepository) : base(userRepository) {}
+        readonly IMapper _mapper;
+
+        public ShowUserInteractor(IUserRepository userRepository, IMapper mapper) : base(userRepository) {
+            _mapper = mapper;
+        }
 
         public void Invoke(ShowUserRequestModel inputModel, IResponseBoundary<ShowUserResponseModel> responder) {
             responder.Respond(CreateResponseModel(inputModel));
@@ -13,7 +18,7 @@ namespace CCC.TestApp.Core.Application.Usecases.Users
 
         ShowUserResponseModel CreateResponseModel(ShowUserRequestModel inputModel) {
             var user = GetExistingUser(inputModel.UserId);
-            return new ShowUserResponseModel {UserName = user.UserName, Password = user.Password, Id = user.Id};
+            return _mapper.DynamicMap<ShowUserResponseModel>(user);
         }
     }
 
