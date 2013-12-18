@@ -4,8 +4,10 @@ using Caliburn.Micro;
 using CCC.TestApp.Core.Application.Usecases;
 using CCC.TestApp.Core.Application.Usecases.Users;
 using CCC.TestApp.UI.Desktop.Models;
+using CCC.TestApp.UI.Desktop.ViewModels;
+using CCC.TestApp.UI.Desktop.ViewModels.Users;
 
-namespace CCC.TestApp.UI.Desktop.ViewModels.Users
+namespace CCC.TestApp.UI.Desktop.Controllers
 {
     public class UsersController
     {
@@ -36,18 +38,15 @@ namespace CCC.TestApp.UI.Desktop.ViewModels.Users
             _shell.ActivateItem(vm);
         }
 
-        public void ShowUser(UserModel user) {
-            ShowUser(user.Id);
-        }
-
         public void ShowUser(Guid userId) {
             var vm = new ShowUserViewModel(this);
+            _eventBus.Subscribe(vm);
             _showUser.Invoke(new ShowUserRequestModel(userId), vm);
             _shell.ActivateItem(vm);
         }
 
-        public void DestroyUser(UserModel user, IResponseBoundary<DestroyUserResponseModel> responder) {
-            _destroyUser.Invoke(new DestroyUserRequestModel {UserId = user.Id}, responder);
+        public void DestroyUser(Guid userId, IResponseBoundary<DestroyUserResponseModel> responder) {
+            _destroyUser.Invoke(new DestroyUserRequestModel {UserId = userId}, responder);
         }
 
         public void NewUser() {
@@ -58,8 +57,10 @@ namespace CCC.TestApp.UI.Desktop.ViewModels.Users
             _createUser.Invoke(Mapper.DynamicMap<CreateUserRequestModel>(user), responder);
         }
 
-        public void EditUser(UserModel user) {
-            _shell.ActivateItem(new EditUserViewModel(user, this));
+        public void EditUser(Guid userId) {
+            var vm = new EditUserViewModel(this);
+            _showUser.Invoke(new ShowUserRequestModel(userId), vm);
+            _shell.ActivateItem(vm);
         }
 
         public void UpdateUser(UserModel user, IResponseBoundary<UpdateUserResponseModel> responder) {
@@ -68,6 +69,10 @@ namespace CCC.TestApp.UI.Desktop.ViewModels.Users
 
         public void RefreshUsers(IResponseBoundary<ListUsersResponseModel> responder) {
             _listUsers.Invoke(new ListUsersRequestModel(), responder);
+        }
+
+        public void RefreshUser(Guid id, IResponseBoundary<ShowUserResponseModel> responder) {
+            _showUser.Invoke(new ShowUserRequestModel(id), responder);
         }
     }
 }

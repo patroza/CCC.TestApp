@@ -5,12 +5,13 @@ using Caliburn.Micro;
 using CCC.TestApp.Core.Application.Events;
 using CCC.TestApp.Core.Application.Usecases;
 using CCC.TestApp.Core.Application.Usecases.Users;
+using CCC.TestApp.UI.Desktop.Controllers;
 using CCC.TestApp.UI.Desktop.Models;
 
 namespace CCC.TestApp.UI.Desktop.ViewModels.Users
 {
     public class UsersViewModel : ScreenBase, IHandle<UserRecordDestroyed>, IHandle<UserRecordCreated>,
-        IResponseBoundary<ListUsersResponseModel>
+        IResponseBoundary<ListUsersResponseModel>, IHandle<UserRecordUpdated>, IResponseBoundary<ShowUserResponseModel>
     {
         readonly UsersController _controller;
         UserModel _selectedUser;
@@ -39,8 +40,19 @@ namespace CCC.TestApp.UI.Desktop.ViewModels.Users
             _users.Remove(_users.First(x => x.Id == message.Id));
         }
 
+        public void Handle(UserRecordUpdated message) {
+            _controller.RefreshUser(message.Id, this);
+        }
+
         public void Respond(ListUsersResponseModel model) {
             Users = new ObservableCollection<UserModel>(model.Users.Select(Mapper.DynamicMap<UserModel>));
+        }
+
+        public void Respond(ShowUserResponseModel model) {
+            var user = Users.FirstOrDefault(x => x.Id == model.Id);
+            if (user == null)
+                return;
+            Mapper.DynamicMap(model, user);
         }
 
         public void NewUser() {
@@ -54,7 +66,7 @@ namespace CCC.TestApp.UI.Desktop.ViewModels.Users
         }
 
         public void ShowUser(UserModel user) {
-            _controller.ShowUser(user);
+            _controller.ShowUser(user.Id);
         }
     }
 }

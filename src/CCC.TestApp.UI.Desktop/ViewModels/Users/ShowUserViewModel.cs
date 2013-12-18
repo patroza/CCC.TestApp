@@ -1,12 +1,15 @@
 ﻿using AutoMapper;
+using Caliburn.Micro;
+using CCC.TestApp.Core.Application.Events;
 using CCC.TestApp.Core.Application.Usecases;
 using CCC.TestApp.Core.Application.Usecases.Users;
+using CCC.TestApp.UI.Desktop.Controllers;
 using CCC.TestApp.UI.Desktop.Models;
 
 namespace CCC.TestApp.UI.Desktop.ViewModels.Users
 {
     public class ShowUserViewModel : ScreenBase, IResponseBoundary<ShowUserResponseModel>,
-        IResponseBoundary<DestroyUserResponseModel>
+        IResponseBoundary<DestroyUserResponseModel>, IHandle<UserRecordUpdated>
     {
         readonly UsersController _controller;
         UserModel _user;
@@ -18,6 +21,12 @@ namespace CCC.TestApp.UI.Desktop.ViewModels.Users
 
         public UserModel User {
             get { return _user; }
+            set { SetProperty(ref _user, value); }
+        }
+
+        public void Handle(UserRecordUpdated message) {
+            if (message.Id == User.Id)
+                _controller.RefreshUser(User.Id, this);
         }
 
         public void Respond(DestroyUserResponseModel model) {
@@ -25,15 +34,15 @@ namespace CCC.TestApp.UI.Desktop.ViewModels.Users
         }
 
         public void Respond(ShowUserResponseModel model) {
-            _user = Mapper.DynamicMap<UserModel>(model);
+            User = Mapper.DynamicMap<UserModel>(model);
         }
 
         public void Destroy() {
-            _controller.DestroyUser(_user, this);
+            _controller.DestroyUser(_user.Id, this);
         }
 
         public void Edit() {
-            _controller.EditUser(_user);
+            _controller.EditUser(_user.Id);
         }
     }
 }

@@ -54,9 +54,9 @@ namespace CCC.TestApp.Infrastructure.DAL.Repositories
             }
         }
 
-        public List<User> All() {
+        public IEnumerable<User> All() {
             lock (_userList)
-                return _userList.Values.Select(Mapper.DynamicMap<User>).ToList();
+                return _userList.Values.Select(Mapper.DynamicMap<User>);
         }
 
         void UpdateExisting(User user) {

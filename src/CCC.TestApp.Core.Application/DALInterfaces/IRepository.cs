@@ -9,6 +9,6 @@ namespace CCC.TestApp.Core.Application.DALInterfaces
         void Update(T entity);
         void Destroy(Guid id);
         void Create(T entity);
-        List<T> All();
+        IEnumerable<T> All();
     }
 }

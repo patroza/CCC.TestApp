@@ -1,6 +1,6 @@
 ﻿using System;
 using Caliburn.Micro;
-using CCC.TestApp.UI.Desktop.ViewModels.Users;
+using CCC.TestApp.UI.Desktop.Controllers;
 
 namespace CCC.TestApp.UI.Desktop.ViewModels
 {

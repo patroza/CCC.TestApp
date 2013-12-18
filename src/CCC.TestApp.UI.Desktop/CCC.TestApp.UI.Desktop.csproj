@@ -51,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Models\ModelBase.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -59,7 +60,6 @@
     <Compile Include="ViewModels\Users\EditUserViewModel.cs" />
     <Compile Include="ViewModels\Users\NewUserViewModel.cs" />
     <Compile Include="ViewModels\Users\ShowUserViewModel.cs" />
-    <Compile Include="ViewModels\Users\UsersController.cs" />
     <Compile Include="ViewModels\Users\UsersViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
