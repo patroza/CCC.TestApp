@@ -1,7 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
-using AutoMapper;
 using Caliburn.Micro;
+using CCC.TestApp.Core.Application;
 using CCC.TestApp.Core.Application.Events;
 using CCC.TestApp.Core.Application.Usecases;
 using CCC.TestApp.Core.Application.Usecases.Users;
@@ -14,11 +14,13 @@ namespace CCC.TestApp.UI.Desktop.ViewModels.Users
         IResponseBoundary<ListUsersResponseModel>, IHandle<UserRecordUpdated>, IResponseBoundary<ShowUserResponseModel>
     {
         readonly UsersController _controller;
+        readonly IMapper _mapper;
         UserModel _selectedUser;
         ObservableCollection<UserModel> _users;
 
-        public UsersViewModel(UsersController controller) {
+        public UsersViewModel(UsersController controller, IMapper mapper) {
             _controller = controller;
+            _mapper = mapper;
             base.DisplayName = "Users";
         }
 
@@ -45,14 +47,14 @@ namespace CCC.TestApp.UI.Desktop.ViewModels.Users
         }
 
         public void Respond(ListUsersResponseModel model) {
-            Users = new ObservableCollection<UserModel>(model.Users.Select(Mapper.DynamicMap<UserModel>));
+            Users = new ObservableCollection<UserModel>(model.Users.Select(_mapper.DynamicMap<UserModel>));
         }
 
         public void Respond(ShowUserResponseModel model) {
             var user = Users.FirstOrDefault(x => x.Id == model.Id);
             if (user == null)
                 return;
-            Mapper.DynamicMap(model, user);
+            _mapper.DynamicMap(model, user);
         }
 
         public void NewUser() {

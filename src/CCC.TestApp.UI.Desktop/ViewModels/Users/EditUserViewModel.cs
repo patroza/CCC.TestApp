@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+﻿using CCC.TestApp.Core.Application;
 using CCC.TestApp.Core.Application.Usecases;
 using CCC.TestApp.Core.Application.Usecases.Users;
 using CCC.TestApp.UI.Desktop.Controllers;
@@ -10,10 +10,12 @@ namespace CCC.TestApp.UI.Desktop.ViewModels.Users
         IResponseBoundary<ShowUserResponseModel>
     {
         readonly UsersController _controller;
+        readonly IMapper _mapper;
         UserModel _user;
 
-        public EditUserViewModel(UsersController controller) {
+        public EditUserViewModel(UsersController controller, IMapper mapper) {
             _controller = controller;
+            _mapper = mapper;
             base.DisplayName = "Edit User";
         }
 
@@ -22,7 +24,7 @@ namespace CCC.TestApp.UI.Desktop.ViewModels.Users
         }
 
         public void Respond(ShowUserResponseModel model) {
-            _user = Mapper.DynamicMap<UserModel>(model);
+            _user = _mapper.DynamicMap<UserModel>(model);
         }
 
         public void Respond(UpdateUserResponseModel model) {

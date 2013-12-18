@@ -6,6 +6,7 @@ using System.ComponentModel.Composition.Registration;
 using System.Linq;
 using System.Reflection;
 using Caliburn.Micro;
+using CCC.TestApp.Core.Application;
 using CCC.TestApp.Core.Application.Usecases.Users;
 using CCC.TestApp.Core.Domain.Entities;
 using CCC.TestApp.Infrastructure.DAL.Repositories;
@@ -69,6 +70,8 @@ namespace CCC.TestApp.UI.Desktop.WPF
         }
 
         static void SetupRegistrationBuilder(RegistrationBuilder rb) {
+            rb.ForType<SixMapper>()
+                .Export<IMapper>();
             SetupUI(rb);
             SetupDAL(rb);
             SetupCore(rb);

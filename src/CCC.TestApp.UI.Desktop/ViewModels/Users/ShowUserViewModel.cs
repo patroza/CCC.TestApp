@@ -1,5 +1,5 @@
-﻿using AutoMapper;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
+using CCC.TestApp.Core.Application;
 using CCC.TestApp.Core.Application.Events;
 using CCC.TestApp.Core.Application.Usecases;
 using CCC.TestApp.Core.Application.Usecases.Users;
@@ -12,10 +12,12 @@ namespace CCC.TestApp.UI.Desktop.ViewModels.Users
         IResponseBoundary<DestroyUserResponseModel>, IHandle<UserRecordUpdated>
     {
         readonly UsersController _controller;
+        readonly IMapper _mapper;
         UserModel _user;
 
-        public ShowUserViewModel(UsersController controller) {
+        public ShowUserViewModel(UsersController controller, IMapper mapper) {
             _controller = controller;
+            _mapper = mapper;
             base.DisplayName = "Show User";
         }
 
@@ -34,7 +36,7 @@ namespace CCC.TestApp.UI.Desktop.ViewModels.Users
         }
 
         public void Respond(ShowUserResponseModel model) {
-            User = Mapper.DynamicMap<UserModel>(model);
+            User = _mapper.DynamicMap<UserModel>(model);
         }
 
         public void Destroy() {

@@ -6,7 +6,11 @@ namespace CCC.TestApp.Core.Application.Usecases.Users
 {
     public class CreateUserInteractor : UserInteractor, ICreateUserRequestBoundary
     {
-        public CreateUserInteractor(IUserRepository userRepository) : base(userRepository) {}
+        readonly IMapper _mapper;
+
+        public CreateUserInteractor(IUserRepository userRepository, IMapper mapper) : base(userRepository) {
+            _mapper = mapper;
+        }
 
         public void Invoke(CreateUserRequestModel inputModel, IResponseBoundary<CreateUserResponseModel> responder) {
             var newUser = CreateUser(inputModel);
@@ -14,11 +18,8 @@ namespace CCC.TestApp.Core.Application.Usecases.Users
             responder.Respond(CreateResponseModel(newUser));
         }
 
-        static User CreateUser(CreateUserRequestModel inputModel) {
-            return new User {
-                UserName = inputModel.UserName,
-                Password = inputModel.Password
-            };
+        User CreateUser(CreateUserRequestModel inputModel) {
+            return _mapper.DynamicMap<User>(inputModel);
         }
 
         void TryPersistUser(User newUser) {

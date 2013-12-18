@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using AutoMapper;
 using Caliburn.Micro;
+using CCC.TestApp.Core.Application;
 using CCC.TestApp.Core.Application.DALInterfaces;
 using CCC.TestApp.Core.Application.Events;
 using CCC.TestApp.Core.Domain.Entities;
@@ -13,10 +13,13 @@ namespace CCC.TestApp.Infrastructure.DAL.Repositories
     public class MockUserRepository : IUserRepository
     {
         readonly IEventAggregator _eventBus;
+        readonly IMapper _mapper;
         readonly Dictionary<Guid, UserRow> _userList = new Dictionary<Guid, UserRow>();
 
-        public MockUserRepository(IEventAggregator eventBus) {
+        public MockUserRepository(IEventAggregator eventBus, IMapper mapper) {
             _eventBus = eventBus;
+            _mapper = mapper;
+
             var guid = Guid.NewGuid();
             _userList.Add(guid, new UserRow {Id = guid, UserName = "Test user 1"});
             guid = Guid.NewGuid();
@@ -25,7 +28,7 @@ namespace CCC.TestApp.Infrastructure.DAL.Repositories
 
         public User Get(Guid userId) {
             lock (_userList)
-                return _userList.ContainsKey(userId) ? Mapper.DynamicMap<User>(_userList[userId]) : null;
+                return _userList.ContainsKey(userId) ? _mapper.DynamicMap<User>(_userList[userId]) : null;
         }
 
         public void Update(User user) {
@@ -56,12 +59,12 @@ namespace CCC.TestApp.Infrastructure.DAL.Repositories
 
         public IEnumerable<User> All() {
             lock (_userList)
-                return _userList.Values.Select(Mapper.DynamicMap<User>);
+                return _userList.Values.Select(_mapper.DynamicMap<User>);
         }
 
         void UpdateExisting(User user) {
             var existingRecord = _userList[user.Id];
-            Mapper.DynamicMap(user, existingRecord);
+            _mapper.DynamicMap(user, existingRecord);
         }
 
         void ValidateExists(Guid userId) {
@@ -81,8 +84,8 @@ namespace CCC.TestApp.Infrastructure.DAL.Repositories
             _userList.Add(userRow.Id, userRow);
         }
 
-        static UserRow CreateUserRow(User user) {
-            return Mapper.DynamicMap<UserRow>(user);
+        UserRow CreateUserRow(User user) {
+            return _mapper.DynamicMap<UserRow>(user);
         }
 
         void ValidateDoesntExistYet(string userName) {
