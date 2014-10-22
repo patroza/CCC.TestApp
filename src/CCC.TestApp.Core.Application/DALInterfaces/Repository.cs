@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CCC.TestApp.Core.Application.DALInterfaces
 {
-    public interface IRepository<T>
+    public interface Repository<T>
     {
         T Get(Guid id);
         void Update(T entity);

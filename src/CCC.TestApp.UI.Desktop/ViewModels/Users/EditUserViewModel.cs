@@ -6,14 +6,14 @@ using CCC.TestApp.UI.Desktop.Models;
 
 namespace CCC.TestApp.UI.Desktop.ViewModels.Users
 {
-    public class EditUserViewModel : ScreenBase, IResponseBoundary<UpdateUserResponseModel>,
-        IResponseBoundary<ShowUserResponseModel>
+    public class EditUserViewModel : ScreenBase, ResponseBoundary<UpdateUserResponseModel>,
+        ResponseBoundary<ShowUserResponseModel>
     {
         readonly UsersController _controller;
-        readonly IMapper _mapper;
+        readonly Mapper _mapper;
         UserModel _user;
 
-        public EditUserViewModel(UsersController controller, IMapper mapper) {
+        public EditUserViewModel(UsersController controller, Mapper mapper) {
             _controller = controller;
             _mapper = mapper;
             base.DisplayName = "Edit User";

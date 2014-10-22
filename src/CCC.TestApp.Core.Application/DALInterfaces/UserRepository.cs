@@ -2,5 +2,5 @@
 
 namespace CCC.TestApp.Core.Application.DALInterfaces
 {
-    public interface IUserRepository : IRepository<User> {}
+    public interface UserRepository : Repository<User> {}
 }

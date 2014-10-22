@@ -4,13 +4,13 @@ using CCC.TestApp.Core.Domain.Entities;
 
 namespace CCC.TestApp.Core.Application.Usecases.Users
 {
-    public class ChangePassword : UserInteractor, IChangePasswordRequestBoundary
+    public class ChangePassword : UserInteractor, ChangePasswordRequestBoundary
     {
-        public ChangePassword(IUserRepository userRepository)
+        public ChangePassword(UserRepository userRepository)
             : base(userRepository) {}
 
         public void Invoke(ChangePasswordRequestModel inputModel,
-            IResponseBoundary<ChangePasswordResponseModel> responder) {
+            ResponseBoundary<ChangePasswordResponseModel> responder) {
             var user = GetExistingUser(inputModel.UserId);
             Validate(inputModel, user);
             UpdateUser(inputModel, user);
@@ -42,14 +42,14 @@ namespace CCC.TestApp.Core.Application.Usecases.Users
         }
     }
 
-    public interface IChangePasswordRequestBoundary :
-        IRequestBoundary<ChangePasswordRequestModel, IResponseBoundary<ChangePasswordResponseModel>> {}
+    public interface ChangePasswordRequestBoundary :
+        RequestBoundary<ChangePasswordRequestModel, ResponseBoundary<ChangePasswordResponseModel>> {}
 
     public class OldPasswordMismatchException : Exception {}
 
     public class PasswordConfirmationMismatchException : Exception {}
 
-    public struct ChangePasswordRequestModel : IRequestModel
+    public struct ChangePasswordRequestModel : RequestModel
     {
         public string OldPassword { get; set; }
         public string Password { get; set; }
@@ -57,5 +57,5 @@ namespace CCC.TestApp.Core.Application.Usecases.Users
         public Guid UserId { get; set; }
     }
 
-    public struct ChangePasswordResponseModel : IResponseModel {}
+    public struct ChangePasswordResponseModel : ResponseModel {}
 }

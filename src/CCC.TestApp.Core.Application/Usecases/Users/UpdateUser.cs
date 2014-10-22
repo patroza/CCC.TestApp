@@ -3,11 +3,11 @@ using CCC.TestApp.Core.Application.DALInterfaces;
 
 namespace CCC.TestApp.Core.Application.Usecases.Users
 {
-    public class UpdateUserInteractor : UserInteractor, IUpdateUserRequestBoundary
+    public class UpdateUserInteractor : UserInteractor, UpdateUserRequestBoundary
     {
-        public UpdateUserInteractor(IUserRepository userRepository) : base(userRepository) {}
+        public UpdateUserInteractor(UserRepository userRepository) : base(userRepository) {}
 
-        public void Invoke(UpdateUserRequestModel inputModel, IResponseBoundary<UpdateUserResponseModel> responder) {
+        public void Invoke(UpdateUserRequestModel inputModel, ResponseBoundary<UpdateUserResponseModel> responder) {
             UpdateUser(inputModel);
             responder.Respond(CreateResponseModel());
         }
@@ -24,15 +24,15 @@ namespace CCC.TestApp.Core.Application.Usecases.Users
         }
     }
 
-    public interface IUpdateUserRequestBoundary :
-        IRequestBoundary<UpdateUserRequestModel, IResponseBoundary<UpdateUserResponseModel>> {}
+    public interface UpdateUserRequestBoundary :
+        RequestBoundary<UpdateUserRequestModel, ResponseBoundary<UpdateUserResponseModel>> {}
 
-    public struct UpdateUserRequestModel : IRequestModel
+    public struct UpdateUserRequestModel : RequestModel
     {
         public Guid Id { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
     }
 
-    public struct UpdateUserResponseModel : IResponseModel {}
+    public struct UpdateUserResponseModel : ResponseModel {}
 }

@@ -5,7 +5,7 @@ using CCC.TestApp.UI.Desktop.Models;
 
 namespace CCC.TestApp.UI.Desktop.ViewModels.Users
 {
-    public class NewUserViewModel : ScreenBase, IResponseBoundary<CreateUserResponseModel>
+    public class NewUserViewModel : ScreenBase, ResponseBoundary<CreateUserResponseModel>
     {
         readonly UsersController _controller;
 

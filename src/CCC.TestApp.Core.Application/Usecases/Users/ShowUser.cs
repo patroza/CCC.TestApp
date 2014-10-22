@@ -4,15 +4,15 @@ using CCC.TestApp.Core.Application.Services;
 
 namespace CCC.TestApp.Core.Application.Usecases.Users
 {
-    public class ShowUserInteractor : UserInteractor, IShowUserRequestBoundary
+    public class ShowUserInteractor : UserInteractor, ShowUserRequestBoundary
     {
-        readonly IMapper _mapper;
+        readonly Mapper _mapper;
 
-        public ShowUserInteractor(IUserRepository userRepository, IMapper mapper) : base(userRepository) {
+        public ShowUserInteractor(UserRepository userRepository, Mapper mapper) : base(userRepository) {
             _mapper = mapper;
         }
 
-        public void Invoke(ShowUserRequestModel inputModel, IResponseBoundary<ShowUserResponseModel> responder) {
+        public void Invoke(ShowUserRequestModel inputModel, ResponseBoundary<ShowUserResponseModel> responder) {
             responder.Respond(CreateResponseModel(inputModel));
         }
 
@@ -22,17 +22,17 @@ namespace CCC.TestApp.Core.Application.Usecases.Users
         }
     }
 
-    public interface IShowUserRequestBoundary :
-        IRequestBoundary<ShowUserRequestModel, IResponseBoundary<ShowUserResponseModel>> {}
+    public interface ShowUserRequestBoundary :
+        RequestBoundary<ShowUserRequestModel, ResponseBoundary<ShowUserResponseModel>> {}
 
-    public struct ShowUserResponseModel : IResponseModel
+    public struct ShowUserResponseModel : ResponseModel
     {
         public string UserName { get; set; }
         public Guid Id { get; set; }
         public string Password { get; set; }
     }
 
-    public struct ShowUserRequestModel : IRequestModel
+    public struct ShowUserRequestModel : RequestModel
     {
         public Guid UserId;
 
