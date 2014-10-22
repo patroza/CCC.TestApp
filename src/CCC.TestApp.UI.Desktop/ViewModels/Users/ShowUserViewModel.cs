@@ -8,14 +8,14 @@ using CCC.TestApp.UI.Desktop.Models;
 
 namespace CCC.TestApp.UI.Desktop.ViewModels.Users
 {
-    public class ShowUserViewModel : ScreenBase, IResponseBoundary<ShowUserResponseModel>,
-        IResponseBoundary<DestroyUserResponseModel>, IHandle<UserRecordUpdated>
+    public class ShowUserViewModel : ScreenBase, ResponseBoundary<ShowUserResponseModel>,
+        ResponseBoundary<DestroyUserResponseModel>, IHandle<UserRecordUpdated>
     {
         readonly UsersController _controller;
-        readonly IMapper _mapper;
+        readonly Mapper _mapper;
         UserModel _user;
 
-        public ShowUserViewModel(UsersController controller, IMapper mapper) {
+        public ShowUserViewModel(UsersController controller, Mapper mapper) {
             _controller = controller;
             _mapper = mapper;
             base.DisplayName = "Show User";

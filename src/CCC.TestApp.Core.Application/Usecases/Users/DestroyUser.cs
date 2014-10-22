@@ -3,11 +3,11 @@ using CCC.TestApp.Core.Application.DALInterfaces;
 
 namespace CCC.TestApp.Core.Application.Usecases.Users
 {
-    public class DestroyUserInteractor : UserInteractor, IDestroyUserRequestBoundary
+    public class DestroyUserInteractor : UserInteractor, DestroyUserRequestBoundary
     {
-        public DestroyUserInteractor(IUserRepository userRepository) : base(userRepository) {}
+        public DestroyUserInteractor(UserRepository userRepository) : base(userRepository) {}
 
-        public void Invoke(DestroyUserRequestModel inputModel, IResponseBoundary<DestroyUserResponseModel> responder) {
+        public void Invoke(DestroyUserRequestModel inputModel, ResponseBoundary<DestroyUserResponseModel> responder) {
             TryDestroyUser(inputModel.UserId);
             responder.Respond(CreateResponseModel());
         }
@@ -25,13 +25,13 @@ namespace CCC.TestApp.Core.Application.Usecases.Users
         }
     }
 
-    public interface IDestroyUserRequestBoundary :
-        IRequestBoundary<DestroyUserRequestModel, IResponseBoundary<DestroyUserResponseModel>> {}
+    public interface DestroyUserRequestBoundary :
+        RequestBoundary<DestroyUserRequestModel, ResponseBoundary<DestroyUserResponseModel>> {}
 
-    public struct DestroyUserRequestModel : IRequestModel
+    public struct DestroyUserRequestModel : RequestModel
     {
         public Guid UserId { get; set; }
     }
 
-    public struct DestroyUserResponseModel : IResponseModel {}
+    public struct DestroyUserResponseModel : ResponseModel {}
 }

@@ -1,6 +1,6 @@
 ﻿namespace CCC.TestApp.Core.Application.Services
 {
-    public interface IMapper
+    public interface Mapper
     {
         TDestination Map<TDestination>(object obj);
         TDestination Map<TSource, TDestination>(TSource obj, TDestination obj2);

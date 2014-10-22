@@ -39,16 +39,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DALInterfaces\IRepository.cs" />
-    <Compile Include="DALInterfaces\IUserRepository.cs" />
+    <Compile Include="DALInterfaces\Repository.cs" />
+    <Compile Include="DALInterfaces\UserRepository.cs" />
     <Compile Include="DALInterfaces\RecordAlreadyExistsException.cs" />
     <Compile Include="Events\RepoEvent.cs" />
     <Compile Include="Events\UserEvents.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\IEventBus.cs" />
-    <Compile Include="Services\IMapper.cs" />
-    <Compile Include="Usecases\IRequestBoundary.cs" />
-    <Compile Include="Usecases\IResponseBoundary.cs" />
+    <Compile Include="Services\EventBus.cs" />
+    <Compile Include="Services\Mapper.cs" />
+    <Compile Include="Services\MockUserMapper.cs" />
+    <Compile Include="Usecases\RequestBoundary.cs" />
+    <Compile Include="Usecases\ResponseBoundary.cs" />
     <Compile Include="DALInterfaces\RecordDoesntExistException.cs" />
     <Compile Include="Usecases\Users\ChangePassword.cs" />
     <Compile Include="Usecases\Users\CreateUser.cs" />

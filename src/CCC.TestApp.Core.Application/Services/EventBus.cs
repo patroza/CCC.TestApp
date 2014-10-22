@@ -2,7 +2,7 @@
 
 namespace CCC.TestApp.Core.Application.Services
 {
-    public interface IEventBus
+    public interface EventBus
     {
         Action<Action> PublicationThreadMarshaller { get; set; }
         bool HandlerExistsFor(Type messageType);

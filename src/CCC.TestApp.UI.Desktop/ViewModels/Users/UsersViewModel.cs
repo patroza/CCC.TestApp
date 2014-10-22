@@ -11,14 +11,14 @@ using CCC.TestApp.UI.Desktop.Models;
 namespace CCC.TestApp.UI.Desktop.ViewModels.Users
 {
     public class UsersViewModel : ScreenBase, IHandle<UserRecordDestroyed>, IHandle<UserRecordCreated>,
-        IResponseBoundary<ListUsersResponseModel>, IHandle<UserRecordUpdated>, IResponseBoundary<ShowUserResponseModel>
+        ResponseBoundary<ListUsersResponseModel>, IHandle<UserRecordUpdated>, ResponseBoundary<ShowUserResponseModel>
     {
         readonly UsersController _controller;
-        readonly IMapper _mapper;
+        readonly Mapper _mapper;
         UserModel _selectedUser;
         ObservableCollection<UserModel> _users;
 
-        public UsersViewModel(UsersController controller, IMapper mapper) {
+        public UsersViewModel(UsersController controller, Mapper mapper) {
             _controller = controller;
             _mapper = mapper;
             base.DisplayName = "Users";

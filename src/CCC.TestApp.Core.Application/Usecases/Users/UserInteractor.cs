@@ -6,9 +6,9 @@ namespace CCC.TestApp.Core.Application.Usecases.Users
 {
     public abstract class UserInteractor
     {
-        protected readonly IUserRepository UserRepository;
+        protected readonly UserRepository UserRepository;
 
-        protected UserInteractor(IUserRepository userRepository) {
+        protected UserInteractor(UserRepository userRepository) {
             UserRepository = userRepository;
         }
 

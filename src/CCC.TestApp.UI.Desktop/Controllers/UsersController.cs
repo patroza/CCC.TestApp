@@ -10,19 +10,19 @@ namespace CCC.TestApp.UI.Desktop.Controllers
 {
     public class UsersController
     {
-        readonly ICreateUserRequestBoundary _createUser;
-        readonly IDestroyUserRequestBoundary _destroyUser;
-        readonly IEventBus _eventBus;
-        readonly IListUsersRequestBoundary _listUsers;
-        readonly IMapper _mapper;
+        readonly CreateUserRequestBoundary _createUser;
+        readonly DestroyUserRequestBoundary _destroyUser;
+        readonly EventBus _eventBus;
+        readonly ListUsersRequestBoundary _listUsers;
+        readonly Mapper _mapper;
         readonly ShellViewModel _shell;
-        readonly IShowUserRequestBoundary _showUser;
-        readonly IUpdateUserRequestBoundary _updateUser;
+        readonly ShowUserRequestBoundary _showUser;
+        readonly UpdateUserRequestBoundary _updateUser;
 
-        public UsersController(IEventBus eventBus, IMapper mapper, ShellViewModel shell,
-            IListUsersRequestBoundary listUsers,
-            IShowUserRequestBoundary showUser, IDestroyUserRequestBoundary destroyUser,
-            ICreateUserRequestBoundary createUser, IUpdateUserRequestBoundary updateUser) {
+        public UsersController(EventBus eventBus, Mapper mapper, ShellViewModel shell,
+            ListUsersRequestBoundary listUsers,
+            ShowUserRequestBoundary showUser, DestroyUserRequestBoundary destroyUser,
+            CreateUserRequestBoundary createUser, UpdateUserRequestBoundary updateUser) {
             _eventBus = eventBus;
             _mapper = mapper;
             _shell = shell;
@@ -47,7 +47,7 @@ namespace CCC.TestApp.UI.Desktop.Controllers
             _shell.ActivateItem(vm);
         }
 
-        public void DestroyUser(Guid userId, IResponseBoundary<DestroyUserResponseModel> responder) {
+        public void DestroyUser(Guid userId, ResponseBoundary<DestroyUserResponseModel> responder) {
             _destroyUser.Invoke(new DestroyUserRequestModel {UserId = userId}, responder);
         }
 
@@ -55,7 +55,7 @@ namespace CCC.TestApp.UI.Desktop.Controllers
             _shell.ActivateItem(new NewUserViewModel(this));
         }
 
-        public void CreateUser(UserModel user, IResponseBoundary<CreateUserResponseModel> responder) {
+        public void CreateUser(UserModel user, ResponseBoundary<CreateUserResponseModel> responder) {
             _createUser.Invoke(_mapper.DynamicMap<CreateUserRequestModel>(user), responder);
         }
 
@@ -65,15 +65,15 @@ namespace CCC.TestApp.UI.Desktop.Controllers
             _shell.ActivateItem(vm);
         }
 
-        public void UpdateUser(UserModel user, IResponseBoundary<UpdateUserResponseModel> responder) {
+        public void UpdateUser(UserModel user, ResponseBoundary<UpdateUserResponseModel> responder) {
             _updateUser.Invoke(_mapper.DynamicMap<UpdateUserRequestModel>(user), responder);
         }
 
-        public void RefreshUsers(IResponseBoundary<ListUsersResponseModel> responder) {
+        public void RefreshUsers(ResponseBoundary<ListUsersResponseModel> responder) {
             _listUsers.Invoke(new ListUsersRequestModel(), responder);
         }
 
-        public void RefreshUser(Guid id, IResponseBoundary<ShowUserResponseModel> responder) {
+        public void RefreshUser(Guid id, ResponseBoundary<ShowUserResponseModel> responder) {
             _showUser.Invoke(new ShowUserRequestModel(id), responder);
         }
     }

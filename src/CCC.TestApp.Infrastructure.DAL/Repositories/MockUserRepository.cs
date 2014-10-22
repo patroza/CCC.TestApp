@@ -9,13 +9,13 @@ using CCC.TestApp.Infrastructure.DAL.Models;
 
 namespace CCC.TestApp.Infrastructure.DAL.Repositories
 {
-    public class MockUserRepository : IUserRepository
+    public class MockUserRepository : UserRepository
     {
-        readonly IEventBus _eventBus;
-        readonly IMapper _mapper;
+        readonly EventBus _eventBus;
+        readonly Mapper _mapper;
         readonly Dictionary<Guid, UserRow> _userList = new Dictionary<Guid, UserRow>();
 
-        public MockUserRepository(IEventBus eventBus, IMapper mapper) {
+        public MockUserRepository(EventBus eventBus, Mapper mapper) {
             _eventBus = eventBus;
             _mapper = mapper;
 

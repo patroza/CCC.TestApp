@@ -5,15 +5,15 @@ using CCC.TestApp.Core.Application.Services;
 
 namespace CCC.TestApp.Core.Application.Usecases.Users
 {
-    public class ListUsersInteractor : UserInteractor, IListUsersRequestBoundary
+    public class ListUsersInteractor : UserInteractor, ListUsersRequestBoundary
     {
-        readonly IMapper _mapper;
+        readonly Mapper _mapper;
 
-        public ListUsersInteractor(IUserRepository userRepository, IMapper mapper) : base(userRepository) {
+        public ListUsersInteractor(UserRepository userRepository, Mapper mapper) : base(userRepository) {
             _mapper = mapper;
         }
 
-        public void Invoke(ListUsersRequestModel inputModel, IResponseBoundary<ListUsersResponseModel> responder) {
+        public void Invoke(ListUsersRequestModel inputModel, ResponseBoundary<ListUsersResponseModel> responder) {
             responder.Respond(CreateResponseModel());
         }
 
@@ -28,13 +28,13 @@ namespace CCC.TestApp.Core.Application.Usecases.Users
         }
     }
 
-    public interface IListUsersRequestBoundary :
-        IRequestBoundary<ListUsersRequestModel, IResponseBoundary<ListUsersResponseModel>> {}
+    public interface ListUsersRequestBoundary :
+        RequestBoundary<ListUsersRequestModel, ResponseBoundary<ListUsersResponseModel>> {}
 
-    public struct ListUsersResponseModel : IResponseModel
+    public struct ListUsersResponseModel : ResponseModel
     {
         public List<ShowUserResponseModel> Users { get; set; }
     }
 
-    public struct ListUsersRequestModel : IRequestModel {}
+    public struct ListUsersRequestModel : RequestModel {}
 }

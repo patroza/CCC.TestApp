@@ -7,23 +7,23 @@ using CCC.TestApp.UI.Web.Models;
 
 namespace CCC.TestApp.UI.Web.Controllers
 {
-    public class UsersController : Controller, IResponseBoundary<ChangePasswordResponseModel>,
-        IResponseBoundary<CreateUserResponseModel>,
-        IResponseBoundary<DestroyUserResponseModel>, IResponseBoundary<UpdateUserResponseModel>,
-        IResponseBoundary<ShowUserResponseModel>
+    public class UsersController : Controller, ResponseBoundary<ChangePasswordResponseModel>,
+        ResponseBoundary<CreateUserResponseModel>,
+        ResponseBoundary<DestroyUserResponseModel>, ResponseBoundary<UpdateUserResponseModel>,
+        ResponseBoundary<ShowUserResponseModel>
     {
-        readonly Lazy<IChangePasswordRequestBoundary> _changePassword;
-        readonly Lazy<ICreateUserRequestBoundary> _create;
-        readonly Lazy<IDestroyUserRequestBoundary> _destroy;
-        readonly Lazy<IShowUserRequestBoundary> _show;
-        readonly Lazy<IUpdateUserRequestBoundary> _update;
+        readonly Lazy<ChangePasswordRequestBoundary> _changePassword;
+        readonly Lazy<CreateUserRequestBoundary> _create;
+        readonly Lazy<DestroyUserRequestBoundary> _destroy;
+        readonly Lazy<ShowUserRequestBoundary> _show;
+        readonly Lazy<UpdateUserRequestBoundary> _update;
 
         ActionResult _response;
 
-        public UsersController(Lazy<IChangePasswordRequestBoundary> changePassword,
-            Lazy<ICreateUserRequestBoundary> create, Lazy<IShowUserRequestBoundary> show,
-            Lazy<IDestroyUserRequestBoundary> destroy,
-            Lazy<IUpdateUserRequestBoundary> update) {
+        public UsersController(Lazy<ChangePasswordRequestBoundary> changePassword,
+            Lazy<CreateUserRequestBoundary> create, Lazy<ShowUserRequestBoundary> show,
+            Lazy<DestroyUserRequestBoundary> destroy,
+            Lazy<UpdateUserRequestBoundary> update) {
             _changePassword = changePassword;
             _create = create;
             _show = show;
